@@ -37,13 +37,11 @@ void getProcesses()
     struct dirent *entry;
     while ((entry = readdir(directory)) != NULL)
     {
-        long int pid;
-        char *endPointer;
 
         // validate that the entry is a directory that is a PID
-        if (entry->d_type == DT_DIR && (pid = strtol(entry->d_name, &endPointer, 10)) > 0 && *endPointer == '\0')
+        if (atoi(entry->d_name) == 0)
         {
-            printf("PID: %ld\n", pid);
+            printf("PID: %ld\n", entry->d_name);
         }
     }
     closedir(directory);
