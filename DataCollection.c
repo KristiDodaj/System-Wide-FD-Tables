@@ -41,7 +41,7 @@ void getProcesses()
         // validate that the entry is a directory that is a PID
         if (atoi(entry->d_name) == 0)
         {
-            printf("PID: %ld\n", entry->d_name);
+            printf("PID: %s\n", entry->d_name);
         }
     }
     closedir(directory);
