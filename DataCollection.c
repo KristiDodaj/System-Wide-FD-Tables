@@ -45,7 +45,7 @@ void getProcesses()
         if (entry->d_type == DT_DIR && (pid = strtol(entry->d_name, &endPointer, 10)) >= 0 && *endPointer == '\0')
         {
 
-            // Check if the current process is owned by the current user
+            // open status file for each pid to check if it is a user owned process
             char uid_path[256];
             snprintf(uid_path, 256, "/proc/%ld/status", pid);
             FILE *status = fopen(uid_path, "r");
@@ -53,18 +53,22 @@ void getProcesses()
             {
                 continue;
             }
+
+            // find uid section in file
             char line[256];
             while (fgets(line, 256, status))
             {
+
+                // check is it is a user owned process
                 if (strncmp(line, "Uid:", 4) == 0)
                 {
                     uid_t proc_uid = atoi(line + 5);
                     if (proc_uid == user_id)
                     {
                         // enter the fd directory given pid
-                        char path[4096];
-                        snprintf(path, 4096, "/proc/%s/fd", entry->d_name);
-                        DIR *fd_directory = opendir(path);
+                        char fd_path[4096];
+                        snprintf(fd_path, 4096, "/proc/%s/fd", entry->d_name);
+                        DIR *fd_directory = opendir(fd_path);
 
                         // when unsucesfully opened
                         if (fd_directory == NULL)
@@ -81,12 +85,16 @@ void getProcesses()
                             {
                                 continue;
                             }
+
                             // update the fd file path
                             int fd = atoi(fd_entry->d_name);
-                            snprintf(path, 4096, "/proc/%ld/fd/%s", pid, fd_entry->d_name);
+                            char fd_file_path[4096];
+                            snprintf(fd_file_path, 4096, "/proc/%ld/fd/%s", pid, fd_entry->d_name);
 
                             char filename[4096];
-                            ssize_t len = readlink(path, filename, 4096);
+                            ssize_t len = readlink(fd_file_path, filename, 4096);
+
+                            // if readlink did not work
                             if (len == -1)
                             {
                                 perror("readlink");
@@ -94,7 +102,14 @@ void getProcesses()
                             }
                             filename[len] = '\0';
 
-                            printf("PID: %ld\tFD: %d\tFilename: %s\n", pid, fd, filename);
+                            // create stat structs to get inode number
+                            struct stat fd_stat;
+                            if (stat(fd_file_path, &fd_stat) == -1)
+                            {
+                                continue;
+                            }
+
+                            printf("PID: %ld\tFD: %d\tFilename: %s\n Inode: %ld\n", pid, fd, filename, fd_stat.st_ino);
                         }
                         closedir(fd_directory);
                     }
