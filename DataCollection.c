@@ -41,7 +41,7 @@ void getProcesses()
         // validate that the entry is a directory that is a PID
         if (entry->d_type == DT_DIR && (pid = strtol(entry->d_name, &endPointer, 10)) > 0 && *endPointer == '\0')
         {
-            printf("PID: %ld\n", pid);
+            // printf("PID: %ld\n", pid);
         }
 
         // enter the fd directory
