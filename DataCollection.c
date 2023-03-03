@@ -76,7 +76,7 @@ void getProcesses()
                 }
                 filename[len] = '\0';
 
-                printf("PID: %d\tFD: %ld\tFilename: %s\n", pid, fd, filename);
+                printf("PID: %ld\tFD: %d\tFilename: %s\n", pid, fd, filename);
             }
             closedir(fd_directory);
         }
