@@ -25,6 +25,9 @@ void getProcesses()
     // open the /proc directory
     DIR *directory = opendir("/proc");
 
+    // Get the UID of the current user
+    uid_t user_id = getuid();
+
     // check if sucessfully opened
     if (directory == NULL)
     {
@@ -39,46 +42,65 @@ void getProcesses()
         char *endPointer;
 
         // validate that the entry is a directory that is a PID
-        if (entry->d_type == DT_DIR && (pid = strtol(entry->d_name, &endPointer, 10)) > 0 && *endPointer == '\0')
+        if (entry->d_type == DT_DIR && (pid = strtol(entry->d_name, &endPointer, 10)) >= 0 && *endPointer == '\0')
         {
-            // printf("PID: %ld\n", pid);
 
-            // enter the fd directory
-            char path[4096];
-            snprintf(path, 4096, "/proc/%s/fd", entry->d_name);
-            DIR *fd_directory = opendir(path);
-
-            // when unsucesfully opened
-            if (fd_directory == NULL)
+            // Check if the current process is owned by the current user
+            char uid_path[256];
+            snprintf(uid_path, 256, "/proc/%d/status", pid);
+            FILE *status = fopen(uid_path, "r");
+            if (status == NULL)
             {
                 continue;
             }
-
-            // go through fd files
-            struct dirent *fd_entry;
-            while ((fd_entry = readdir(fd_directory)) != NULL)
+            char line[256];
+            while (fgets(line, 256, status))
             {
-                // skip over "." and ".."
-                if (strcmp(fd_entry->d_name, ".") == 0 || strcmp(fd_entry->d_name, "..") == 0)
+                if (strncmp(line, "Uid:", 4) == 0)
                 {
-                    continue;
-                }
-                // update the fd file path
-                int fd = atoi(fd_entry->d_name);
-                snprintf(path, 4096, "/proc/%ld/fd/%s", pid, fd_entry->d_name);
+                    uid_t proc_uid = atoi(line + 5);
+                    if (proc_uid == user_id)
+                    {
+                        // enter the fd directory given pid
+                        char path[4096];
+                        snprintf(path, 4096, "/proc/%s/fd", entry->d_name);
+                        DIR *fd_directory = opendir(path);
 
-                char filename[4096];
-                ssize_t len = readlink(path, filename, 4096);
-                if (len == -1)
-                {
-                    perror("readlink");
-                    continue;
-                }
-                filename[len] = '\0';
+                        // when unsucesfully opened
+                        if (fd_directory == NULL)
+                        {
+                            continue;
+                        }
 
-                printf("PID: %ld\tFD: %d\tFilename: %s\n", pid, fd, filename);
+                        // go through fd files
+                        struct dirent *fd_entry;
+                        while ((fd_entry = readdir(fd_directory)) != NULL)
+                        {
+                            // skip over "." and ".."
+                            if (strcmp(fd_entry->d_name, ".") == 0 || strcmp(fd_entry->d_name, "..") == 0)
+                            {
+                                continue;
+                            }
+                            // update the fd file path
+                            int fd = atoi(fd_entry->d_name);
+                            snprintf(path, 4096, "/proc/%ld/fd/%s", pid, fd_entry->d_name);
+
+                            char filename[4096];
+                            ssize_t len = readlink(path, filename, 4096);
+                            if (len == -1)
+                            {
+                                perror("readlink");
+                                continue;
+                            }
+                            filename[len] = '\0';
+
+                            printf("PID: %ld\tFD: %d\tFilename: %s\n", pid, fd, filename);
+                        }
+                        fclose(fd_directory);
+                    }
+                }
             }
-            closedir(fd_directory);
+            fclose(status);
         }
     }
     closedir(directory);
