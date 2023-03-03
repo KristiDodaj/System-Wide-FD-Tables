@@ -47,7 +47,7 @@ void getProcesses()
 
             // Check if the current process is owned by the current user
             char uid_path[256];
-            snprintf(uid_path, 256, "/proc/%d/status", pid);
+            snprintf(uid_path, 256, "/proc/%ld/status", pid);
             FILE *status = fopen(uid_path, "r");
             if (status == NULL)
             {
@@ -96,7 +96,7 @@ void getProcesses()
 
                             printf("PID: %ld\tFD: %d\tFilename: %s\n", pid, fd, filename);
                         }
-                        fclose(fd_directory);
+                        closedir(fd_directory);
                     }
                 }
             }
