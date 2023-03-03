@@ -65,34 +65,18 @@ void getProcesses()
                 }
                 // update the fd file path
                 int fd = atoi(fd_entry->d_name);
-                snprintf(path, 4096, "/proc/%s/fdinfo/%d", entry->d_name, fd);
-                FILE *fd_info = fopen(path, "r");
+                snprintf(path, 4096, "/proc/%d/fd/%s", pid, fd_entry->d_name);
 
-                // continue if unsucessful in opening
-                if (fd_info == NULL)
+                char filename[4096];
+                ssize_t len = readlink(path, filename, 4096);
+                if (len == -1)
                 {
-
+                    perror("readlink");
                     continue;
                 }
+                filename[len] = '\0';
 
-                char *line = NULL;
-                size_t len = 0;
-                ssize_t nread;
-                while ((nread = getline(&line, &len, fd_info)) != -1)
-                {
-                    if (strncmp(line, "pos:", 4) == 0)
-                    {
-                        char *pos = line + 4;
-                        while (*pos == ' ')
-                        {
-                            pos++;
-                        }
-                        printf("%-10s%-20d%-20s%s", entry->d_name, fd, fd_entry->d_name, pos);
-                        break;
-                    }
-                }
-                fclose(fd_info);
-                free(line);
+                printf("PID: %d\tFD: %d\tFilename: %s\n", pid, fd, filename);
             }
             closedir(fd_directory);
         }
