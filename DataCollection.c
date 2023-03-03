@@ -109,7 +109,7 @@ void getProcesses()
                                 continue;
                             }
 
-                            printf("PID: %ld\tFD: %d\tFilename: %s\n Inode: %ld\n", pid, fd, filename, fd_stat.st_ino);
+                            printf("PID: %ld\tFD: %d\tFilename: %s Inode: %ld\n", pid, fd, filename, fd_stat.st_ino);
                         }
                         closedir(fd_directory);
                     }
