@@ -65,7 +65,7 @@ void getProcesses()
                 }
                 // update the fd file path
                 int fd = atoi(fd_entry->d_name);
-                snprintf(path, 4096, "/proc/%d/fd/%s", pid, fd_entry->d_name);
+                snprintf(path, 4096, "/proc/%ld/fd/%s", pid, fd_entry->d_name);
 
                 char filename[4096];
                 ssize_t len = readlink(path, filename, 4096);
@@ -76,7 +76,7 @@ void getProcesses()
                 }
                 filename[len] = '\0';
 
-                printf("PID: %d\tFD: %d\tFilename: %s\n", pid, fd, filename);
+                printf("PID: %d\tFD: %ld\tFilename: %s\n", pid, fd, filename);
             }
             closedir(fd_directory);
         }
