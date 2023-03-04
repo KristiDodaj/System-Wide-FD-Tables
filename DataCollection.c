@@ -121,8 +121,6 @@ size_t getProcesses(process **processes)
 
                             // update count
                             count += 1;
-
-                            printf("PID: %ld\tFD: %d\tFilename: %s Inode: %ld\n", pid, fd, filename, fd_stat.st_ino);
                         }
 
                         // close the opened files and directories
