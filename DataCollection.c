@@ -29,7 +29,7 @@ int getProcesses(process *processes)
     uid_t user_id = getuid();
 
     // count the number of processes
-    int count = 0;
+    int count = 1;
 
     // check if sucessfully opened
     if (directory == NULL)
@@ -112,8 +112,10 @@ int getProcesses(process *processes)
                             {
                                 continue;
                             }
-
-                            processes = realloc(processes, (count + 1) * sizeof(process));
+                            if (count != 1)
+                            {
+                                processes = realloc(processes, (count + 1) * sizeof(process));
+                            }
                             processes[count].pid = pid;
                             processes[count].fd = fd;
                             strcpy(processes[count].filename, filename);
@@ -140,7 +142,7 @@ int getProcesses(process *processes)
 
 int main()
 {
-    process *processes;
+    process *processes = malloc(sizeof(process));
     int count = getProcesses(processes);
 
     printf("================================\n");
