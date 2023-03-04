@@ -118,7 +118,9 @@ int getProcesses(process *processes)
                             }
                             processes[count].pid = pid;
                             processes[count].fd = fd;
+                            processes[count].filename = malloc(strlen(filename) + 1);
                             strcpy(processes[count].filename, filename);
+
                             processes[count].inode = fd_stat.st_ino;
 
                             // update count
