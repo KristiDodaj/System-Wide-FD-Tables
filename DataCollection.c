@@ -17,16 +17,19 @@ typedef struct
     long int inode;
 } process;
 
-// This function will populate a dynamic array with the process data strcutures defined above.
+// This function will populate a dynamic array with the process data strcutures defined above and returns the number of processes found.
 
-void getProcesses()
+size_t getProcesses(process **processes)
 {
 
     // open the /proc directory
     DIR *directory = opendir("/proc");
 
-    // Get the UID of the current user
+    // get the UID of the current user
     uid_t user_id = getuid();
+
+    // count the number of processes
+    size_t count = 0;
 
     // check if sucessfully opened
     if (directory == NULL)
@@ -62,8 +65,8 @@ void getProcesses()
                 // check is it is a user owned process
                 if (strncmp(line, "Uid:", 4) == 0)
                 {
-                    uid_t proc_uid = atoi(line + 5);
-                    if (proc_uid == user_id)
+                    uid_t process_uid = atoi(line + 5);
+                    if (process_uid == user_id)
                     {
                         // enter the fd directory given pid
                         char fd_path[4096];
@@ -76,7 +79,7 @@ void getProcesses()
                             continue;
                         }
 
-                        // go through fd files
+                        // go through fd directories
                         struct dirent *fd_entry;
                         while ((fd_entry = readdir(fd_directory)) != NULL)
                         {
@@ -91,6 +94,7 @@ void getProcesses()
                             char fd_file_path[4096];
                             snprintf(fd_file_path, 4096, "/proc/%ld/fd/%s", pid, fd_entry->d_name);
 
+                            // get filename
                             char filename[4096];
                             ssize_t len = readlink(fd_file_path, filename, 4096);
 
@@ -109,8 +113,22 @@ void getProcesses()
                                 continue;
                             }
 
+                            // add to array of processes
+                            process new_process = {
+                                .pid = pid,
+                                .fd = fd,
+                                .filename = filename,
+                                .inode = fd_stat.st_ino};
+
+                            *processes = realloc(*processes, sizeof(process) * (count + 1));
+
+                            // update count
+                            count++;
+
                             printf("PID: %ld\tFD: %d\tFilename: %s Inode: %ld\n", pid, fd, filename, fd_stat.st_ino);
                         }
+
+                        // close the opened files and directories
                         closedir(fd_directory);
                     }
                 }
@@ -119,9 +137,17 @@ void getProcesses()
         }
     }
     closedir(directory);
+
+    return count;
 }
 
 int main()
 {
-    getProcesses();
+    process *processes = NULL;
+    size_t count = getProcesses(&processes);
+
+    for (size_t i = 0; i < count; i++)
+    {
+        printf("%-10d %-10d %-50s %lu\n", processes[i].pid, processes[i].fd, processes[i].filename, processes[i].inode);
+    }
 }
