@@ -118,10 +118,10 @@ size_t getProcesses(process **processes)
                                 processes = (process **)realloc(processes, (count + 1) * sizeof(process *));
                             }
                             *processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
-                            (*processes)[count].pid = pid;
-                            (*processes)[count].fd = fd;
-                            (*processes)[count].filename = strdup(filename);
-                            (*processes)[count].inode = fd_stat.st_ino;
+                            (*processes + count)->pid = pid;
+                            (*processes + count)->fd = fd;
+                            (*processes + count)->filename = strdup(filename);
+                            (*processes + count)->inode = fd_stat.st_ino;
 
                             // update count
                             count += 1;
@@ -152,6 +152,6 @@ int main()
 
     for (size_t i = 0; i < count; i++)
     {
-        printf("%-10ld %-10ld %-50s %lu\n", (*processes)[i].pid, (*processes)[i].fd, (*processes)[i].filename, (*processes)[i].inode);
+        printf("%-10ld %-10ld %-50s %lu\n", (*processes + count)->pid, (*processes + count)->fd, (*processes + count)->filename, (*processes + count)->inode);
     }
 }
