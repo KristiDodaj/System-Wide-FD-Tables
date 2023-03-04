@@ -117,6 +117,7 @@ size_t getProcesses(process **processes)
                             processes[count] = (process *)malloc(sizeof(process));
                             processes[count]->pid = pid;
                             processes[count]->fd = fd;
+                            processes[count]->filename = (char *)malloc((strlen(filename) + 1) * sizeof(char));
                             strcpy(processes[count]->filename, filename);
                             processes[count]->inode = fd_stat.st_ino;
 
