@@ -146,6 +146,8 @@ int main()
     process *processes = NULL;
     size_t count = getProcesses(&processes);
 
+    printf("================================\n");
+
     for (size_t i = 0; i < count; i++)
     {
         printf("%-10d %-10d %-50s %lu\n", processes[i].pid, processes[i].fd, processes[i].filename, processes[i].inode);
