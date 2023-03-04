@@ -113,7 +113,10 @@ size_t getProcesses(process **processes)
                                 continue;
                             }
 
-                            processes = (process **)realloc(processes, (count + 1) * sizeof(process *));
+                            if (count != 0)
+                            {
+                                processes = (process **)realloc(processes, (count + 1) * sizeof(process *));
+                            }
                             processes[count] = (process *)malloc(sizeof(process));
                             processes[count]->pid = pid;
                             processes[count]->fd = fd;
@@ -143,7 +146,7 @@ size_t getProcesses(process **processes)
 int main()
 {
 
-    process **processes = (process **)malloc(0 * sizeof(process *));
+    process **processes = (process **)malloc(1 * sizeof(process *));
     size_t count = getProcesses(processes);
 
     printf("================================\n");
