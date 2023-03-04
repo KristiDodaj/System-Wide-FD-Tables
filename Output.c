@@ -46,5 +46,5 @@ int main()
 
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getCompositeTable(processes, count, -1);
+    getCompositeTable(processes, count, 3160666);
 }
