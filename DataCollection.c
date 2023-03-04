@@ -29,7 +29,7 @@ int getProcesses(process *processes)
     uid_t user_id = getuid();
 
     // count the number of processes
-    int count = 1;
+    int count = 0;
 
     // check if sucessfully opened
     if (directory == NULL)
@@ -112,19 +112,18 @@ int getProcesses(process *processes)
                             {
                                 continue;
                             }
-                            if (count != 1)
-                            {
-                                processes = realloc(processes, (count + 1) * sizeof(process));
-                            }
-                            processes[count].pid = pid;
-                            processes[count].fd = fd;
-                            processes[count].filename = malloc(strlen(filename) + 1);
-                            strcpy(processes[count].filename, filename);
-
-                            processes[count].inode = fd_stat.st_ino;
 
                             // update count
                             count++;
+
+                            processes = realloc(processes, (count) * sizeof(process));
+
+                            processes[count - 1].pid = pid;
+                            processes[count - 1].fd = fd;
+                            processes[count - 1].filename = malloc(strlen(filename) + 1);
+                            strcpy(processes[count - 2].filename, filename);
+
+                            processes[count - 1].inode = fd_stat.st_ino;
 
                             printf("PID: %ld\tFD: %d\tFilename: %s Inode: %ld\n", pid, fd, filename, fd_stat.st_ino);
                         }
