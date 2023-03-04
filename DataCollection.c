@@ -1,3 +1,6 @@
+
+// DataCollection.c: This file is responsible for gathering all the processes and storing them in an array of process structs.
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -8,10 +11,16 @@
 #include <string.h>
 #include "datacollection.h"
 
-// This function will populate a dynamic array with the process data strcutures defined above and returns the number of processes found.
-
 size_t getProcesses(process **processes)
 {
+    // This function will populate a dynamic array with the process structs defined in the datacollection.h file and returns the number of processes found.
+    // This is being done by validating that the process is user owned through cheching the process uid and by scarping info through the /proc directory.
+    // NOTE: we use realloc() to dynamically increase the size of array depending on how many processes we have to add
+    // Example Output:
+    // process **processes = (process **)malloc(sizeof(process *));
+    // size_t count = getProcesses(processes) will set:
+    //
+    // size_t count = 15 and fill the array processes with the 15 process structs
 
     // open the /proc directory
     DIR *directory = opendir("/proc");
@@ -104,11 +113,6 @@ size_t getProcesses(process **processes)
                                 continue;
                             }
 
-                            // extend array and add new process to it
-                            // if (count != 0)
-                            //{
-                            //    *processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
-                            //}
                             *processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
                             (*processes + count)->pid = pid;
                             (*processes + count)->fd = fd;
