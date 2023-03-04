@@ -113,11 +113,12 @@ size_t getProcesses(process **processes)
                                 continue;
                             }
 
+                            // extend array and add new process to it
                             if (count != 0)
                             {
                                 *processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
                             }
-                            *processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
+                            //*processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
                             (*processes + count)->pid = pid;
                             (*processes + count)->fd = fd;
                             (*processes + count)->filename = strdup(filename);
