@@ -19,7 +19,7 @@ typedef struct
 
 // This function will populate a dynamic array with the process data strcutures defined above and returns the number of processes found.
 
-size_t getProcesses(process **processes)
+int getProcesses(process *processes)
 {
 
     // open the /proc directory
@@ -29,7 +29,7 @@ size_t getProcesses(process **processes)
     uid_t user_id = getuid();
 
     // count the number of processes
-    size_t count = 0;
+    int count = 0;
 
     // check if sucessfully opened
     if (directory == NULL)
@@ -113,20 +113,11 @@ size_t getProcesses(process **processes)
                                 continue;
                             }
 
-                            if (processes == NULL)
-                            {
-                                processes = malloc(sizeof(process));
-                            }
-                            else
-                            {
-                                *processes = realloc(*processes, sizeof(process) * (count + 1));
-                            }
-
-                            // add to array of processes
-                            processes[count]->pid = pid;
-                            processes[count]->fd = fd;
-                            strcpy(processes[count]->filename, filename);
-                            processes[count]->inode = fd_stat.st_ino;
+                            processes = realloc(processes, (count + 1) * sizeof(process));
+                            processes[count].pid = pid;
+                            processes[count].fd = fd;
+                            strcpy(processes[count].filename, filename);
+                            processes[count].inode = fd_stat.st_ino;
 
                             // update count
                             count++;
@@ -149,12 +140,12 @@ size_t getProcesses(process **processes)
 
 int main()
 {
-    process *processes = NULL;
-    size_t count = getProcesses(&processes);
+    process *processes;
+    int count = getProcesses(processes);
 
     printf("================================\n");
 
-    for (size_t i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         printf("%-10ld %-10ld %-50s %lu\n", processes[i].pid, processes[i].fd, processes[i].filename, processes[i].inode);
     }
