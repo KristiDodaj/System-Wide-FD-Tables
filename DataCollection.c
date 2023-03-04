@@ -113,14 +113,20 @@ size_t getProcesses(process **processes)
                                 continue;
                             }
 
-                            // add to array of processes
-                            process new_process = {
-                                .pid = pid,
-                                .fd = fd,
-                                .filename = filename,
-                                .inode = fd_stat.st_ino};
+                            if (processes == NULL)
+                            {
+                                processes = malloc(sizeof(process));
+                            }
+                            else
+                            {
+                                *processes = realloc(*processes, sizeof(process) * (count + 1));
+                            }
 
-                            *processes = realloc(*processes, sizeof(process) * (count + 1));
+                            // add to array of processes
+                            processes[count]->pid = pid;
+                            processes[count]->fd = fd;
+                            strcpy(processes[count]->filename, filename);
+                            processes[count]->inode = fd_stat.st_ino;
 
                             // update count
                             count++;
