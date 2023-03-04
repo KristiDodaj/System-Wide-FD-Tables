@@ -14,8 +14,6 @@ void getCompositeTable(process **processes, size_t count, long int pid)
 
     // print content
     int counter = 0;
-    char str_pid[4096];
-    sprintf(str_pid, "%ld", pid);
 
     for (size_t i = 0; i < count; i++)
     {
@@ -25,7 +23,7 @@ void getCompositeTable(process **processes, size_t count, long int pid)
         }
         else
         {
-            if (strcmp((*processes + i)->pid, str_pid) == 0)
+            if ((*processes + i)->pid == pid)
             {
                 printf("%-6ld%-10ld%-10ld%-20s\t\t%-10ld\n", counter, (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
                 counter++;
