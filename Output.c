@@ -13,7 +13,7 @@ void getCompositeTable(process **processes, size_t count, long int pid)
     printf("%-6s==============================================================\n", " ");
 
     // print content
-    int counter = 0;
+    long int counter = 0;
 
     for (size_t i = 0; i < count; i++)
     {
