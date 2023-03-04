@@ -6,16 +6,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
-
-// This CDT represents a single process including it's information (pid, fd, filename, inode)
-
-typedef struct
-{
-    long int pid;
-    long int fd;
-    char *filename;
-    long int inode;
-} process;
+#include <datacollection.h>
 
 // This function will populate a dynamic array with the process data strcutures defined above and returns the number of processes found.
 
@@ -141,18 +132,4 @@ size_t getProcesses(process **processes)
     closedir(directory);
 
     return count;
-}
-
-int main()
-{
-
-    process **processes = (process **)malloc(sizeof(process *));
-    size_t count = getProcesses(processes);
-
-    printf("================================\n");
-
-    for (size_t i = 0; i < count; i++)
-    {
-        printf("%-10ld %-10ld %-50s %lu\n", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
-    }
 }
