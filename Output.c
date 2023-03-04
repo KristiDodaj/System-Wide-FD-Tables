@@ -9,7 +9,7 @@ void getCompositeTable(process **processes, size_t count, long int pid)
     // Note: The composite table is composed of (PID, FD, Filename, Inode) info
 
     // print header
-    printf("%-10s%-10s%-10s%-10s\n", "PID", "FD", "Filename", "Inode");
+    printf("%-10s%-10s%-10s%-30s\n", "PID", "FD", "Filename", "Inode");
     printf("===============================================\n");
 
     for (size_t i = 0; i < count; i++)
