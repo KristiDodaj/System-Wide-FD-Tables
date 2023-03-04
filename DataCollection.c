@@ -150,6 +150,6 @@ int main()
 
     for (size_t i = 0; i < count; i++)
     {
-        printf("%-10d %-10d %-50s %lu\n", processes[i].pid, processes[i].fd, processes[i].filename, processes[i].inode);
+        printf("%-10ld %-10ld %-50s %lu\n", processes[i].pid, processes[i].fd, processes[i].filename, processes[i].inode);
     }
 }
