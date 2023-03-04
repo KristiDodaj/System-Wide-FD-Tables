@@ -11,9 +11,9 @@
 
 typedef struct
 {
-    long int *pid;
-    long int *fd;
-    char *filename;
+    long int pid;
+    long int fd;
+    char filename;
     long int inode;
 } process;
 
