@@ -144,7 +144,7 @@ int getProcesses(process *processes)
 int main()
 {
     process *processes;
-    int count = getProcesses(&processes);
+    int count = getProcesses(processes);
 
     printf("================================\n");
 
