@@ -117,7 +117,7 @@ size_t getProcesses(process **processes)
                             {
                                 processes = (process **)realloc(processes, (count + 1) * sizeof(process *));
                             }
-                            *processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
+                            // *processes = (process *)realloc(*processes, (count + 1) * sizeof(process));
                             (*processes + count)->pid = pid;
                             (*processes + count)->fd = fd;
                             (*processes + count)->filename = strdup(filename);
