@@ -13,7 +13,7 @@ typedef struct
 {
     long int pid;
     long int fd;
-    char filename;
+    char *filename;
     long int inode;
 } process;
 
