@@ -9,16 +9,19 @@ void getCompositeTable(process **processes, size_t count, long int pid)
     // Note: The composite table is composed of (PID, FD, Filename, Inode) info
 
     // print header
-    printf("\n%-10s%-10s%-10s%-20s\t\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
-    printf("%-10s==============================================================\n", " ");
+    printf("\n%-6s%-10s%-10s%-20s\t\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
+    printf("%-6s==============================================================\n", " ");
 
+    // print content
     for (size_t i = 0; i < count; i++)
     {
         if (pid == -1)
         {
-            printf("%-10ld%-10ld%-10ld%-20s\t\t%-10ld\n", count, (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+            printf("%-6ld%-10ld%-10ld%-20s\t\t%-10ld\n", i, (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
         }
     }
+
+    printf("%-6s==============================================================\n", " ");
 }
 
 int main()
