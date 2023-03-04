@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
-#include <datacollection.h>
+#include "datacollection.h"
 
 // This function will populate a dynamic array with the process data strcutures defined above and returns the number of processes found.
 
