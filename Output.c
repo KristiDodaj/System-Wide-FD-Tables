@@ -84,7 +84,7 @@ void getSystemWide(process **processes, size_t count, long int pid)
 
     // print header
     printf("\n%-6s%-10s%-10s%-30s\n", " ", "PID", "FD", "Filename");
-    printf("%-6s======================================================================\n", " ");
+    printf("%-6s ==================================================\n", " ");
 
     // print content
     for (size_t i = 0; i < count; i++)
@@ -101,12 +101,12 @@ void getSystemWide(process **processes, size_t count, long int pid)
             }
         }
     }
-    printf("%-6s======================================================================\n", " ");
+    printf("%-6s ==================================================\n", " ");
 }
 
 int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getSystemWide(processes, count, -1);
+    getSystemWide(processes, count, 3160666);
 }
