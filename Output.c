@@ -11,6 +11,17 @@ bool pidExists(process **processes, size_t count, long int pid)
 {
     // This function will take in the array "process **processes" along with its length "size_t count" and a pid number (long int pid) and will check
     // whether that pid exists in the array. The function will return true if it exists or is equal to -1 (indicating we want every pid) and false if it does not exist or is an invalid PID.
+    // Example Output:
+    // size_t count = 15
+    // process **processes = {{ 118743, 0, "/dev/null", 5}, ........., {118743, 25, "socket:[642073]", 642073}} where ... represents the other 13 process structs
+    // pidExists(processes, count, -23456)
+    //
+    // returns false and prints "THE INPUTTED PID IS IN THE WRONG FORMAT"
+    // Example Output 2:
+    // process **processes = {{ 118743, 0, "/dev/null", 5}, ........., {118743, 25, "socket:[642073]", 642073}} where ... represents the other 13 process structs
+    // pidExists(processes, count, 118743)
+    //
+    // returns true
 
     // check it equals -1
     if (pid == -1)
@@ -42,6 +53,42 @@ void getCompositeTable(process **processes, size_t count, long int pid)
     // Additionally, the function will recieve the "long int pid" which will be equal to -1 if we want to go through every process,
     // or equal to a particular pid if we want to generate a composite table for a specific process.
     // Note: The composite table is composed of (PID, FD, Filename, Inode) info
+    // Example Output:
+    // getCompositeTable(process **processes, size_t count,  3391894) prints
+    //
+    //    PID       FD        Filename                      	Inode
+    //  ======================================================================
+    //  3391894   0         /dev/null                     	6
+    //  3391894   1         socket:[1748824698]           	1748824698
+    //  3391894   2         socket:[1748824698]           	1748824698
+    //  3391894   3         socket:[1748838307]           	1748838307
+    //  3391894   4         anon_inode:[eventpoll]        	10286
+    //  3391894   5         anon_inode:[signalfd]         	10286
+    //  3391894   6         anon_inode:inotify            	10286
+    //  3391894   7         /sys/fs/cgroup/unified/user.slice/user-23629403.slice/user@23629403.service	256456
+    //  3391894   8         anon_inode:[timerfd]          	10286
+    //  3391894   9         anon_inode:[eventpoll]        	10286
+    //  3391894   10        /proc/3391894/mountinfo       	1748838314
+    //  3391894   11        anon_inode:inotify            	10286
+    //  3391894   12        socket:[1748838341]           	1748838341
+    //  3391894   13        anon_inode:inotify            	10286
+    //  3391894   14        /proc/swaps                   	4026532071
+    //  3391894   15        socket:[1748838315]           	1748838315
+    //  3391894   16        socket:[1748838328]           	1748838328
+    //  3391894   17        socket:[1748838329]           	1748838329
+    //  3391894   18        socket:[1748838330]           	1748838330
+    //  3391894   19        socket:[1748838331]           	1748838331
+    //  3391894   20        socket:[1748838333]           	1748838333
+    //  3391894   21        anon_inode:[timerfd]          	10286
+    //  3391894   26        socket:[1748838346]           	1748838346
+    //  3391894   27        socket:[1748838348]           	1748838348
+    //  3391894   28        socket:[1748838350]           	1748838350
+    //  3391894   29        socket:[1748838352]           	1748838352
+    //  3391894   30        socket:[1748838354]           	1748838354
+    //  3391894   31        socket:[1748838356]           	1748838356
+    //  ======================================================================
+    //
+    // Similarily, it would print all the processes if the inputted pid is -1
 
     // print header
     printf("\n%-6s%-10s%-10s%-30s\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
@@ -72,6 +119,42 @@ void getPerProcess(process **processes, size_t count, long int pid)
     // Additionally, the function will recieve the "long int pid" which will be equal to -1 if we want to go through every process,
     // or equal to a particular pid if we want to generate a per process table for a specific process.
     // Note: The per process table is composed of (PID, FD) info
+    // Example Output:
+    // getPerProcess(process **processes, size_t count, 3391894) prints
+    //
+    //  PID       FD
+    //  ===============
+    //  3391894   0
+    //  3391894   1
+    //  3391894   2
+    //  3391894   3
+    //  3391894   4
+    //  3391894   5
+    //  3391894   6
+    //  3391894   7
+    //  3391894   8
+    //  3391894   9
+    //  3391894   10
+    //  3391894   11
+    //  3391894   12
+    //  3391894   13
+    //  3391894   14
+    //  3391894   15
+    //  3391894   16
+    //  3391894   17
+    //  3391894   18
+    //  3391894   19
+    //  3391894   20
+    //  3391894   21
+    //  3391894   26
+    //  3391894   27
+    //  3391894   28
+    //  3391894   29
+    //  3391894   30
+    //  3391894   31
+    //  ===============
+    //
+    // Similarily, it would print all the processes if the inputted pid is -1
 
     // print header
     printf("\n%-6s%-10s%-10s\n", " ", "PID", "FD");
@@ -101,6 +184,42 @@ void getSystemWide(process **processes, size_t count, long int pid)
     // Additionally, the function will recieve the "long int pid" which will be equal to -1 if we want to go through every process,
     // or equal to a particular pid if we want to generate a system-wide FD table for a specific process.
     // Note: The system-wide FD table is composed of (PID, FD, Filename) info
+    // Example Output:
+    // getSystemWide(process **processes, size_t count, 3391894) prints
+    //
+    // PID       FD        Filename
+    //  ==================================================
+    //  3391894   0         /dev/null
+    //  3391894   1         socket:[1748824698]
+    //  3391894   2         socket:[1748824698]
+    //  3391894   3         socket:[1748838307]
+    //  3391894   4         anon_inode:[eventpoll]
+    //  3391894   5         anon_inode:[signalfd]
+    //  3391894   6         anon_inode:inotify
+    //  3391894   7         /sys/fs/cgroup/unified/user.slice/user-23629403.slice/user@23629403.service
+    //  3391894   8         anon_inode:[timerfd]
+    //  3391894   9         anon_inode:[eventpoll]
+    //  3391894   10        /proc/3391894/mountinfo
+    //  3391894   11        anon_inode:inotify
+    //  3391894   12        socket:[1748838341]
+    //  3391894   13        anon_inode:inotify
+    //  3391894   14        /proc/swaps
+    //  3391894   15        socket:[1748838315]
+    //  3391894   16        socket:[1748838328]
+    //  3391894   17        socket:[1748838329]
+    //  3391894   18        socket:[1748838330]
+    // 3391894   19        socket:[1748838331]
+    //  3391894   20        socket:[1748838333]
+    //  3391894   21        anon_inode:[timerfd]
+    //  3391894   26        socket:[1748838346]
+    //  3391894   27        socket:[1748838348]
+    //  3391894   28        socket:[1748838350]
+    //  3391894   29        socket:[1748838352]
+    //  3391894   30        socket:[1748838354]
+    //  3391894   31        socket:[1748838356]
+    //  ==================================================
+    //
+    // Similarily, it would print all the processes if the inputted pid is -1
 
     // print header
     printf("\n%-6s%-10s%-10s%-30s\n", " ", "PID", "FD", "Filename");
@@ -130,6 +249,42 @@ void getVnodes(process **processes, size_t count, long int pid)
     // Additionally, the function will recieve the "long int pid" which will be equal to -1 if we want to go through every process,
     // or equal to a particular pid if we want to generate a Vnodes FD table for a specific process.
     // Note: The Vnodes FD table is composed of (FD, Inode) info
+    // Example Output:
+    // getVnodes(process **processes, size_t count, 3391894) prints
+    //
+    //  FD        Inode
+    //  =================================
+    //  0         6
+    //  1         1748824698
+    //  2         1748824698
+    //  3         1748838307
+    //  4         10286
+    //  5         10286
+    //  6         10286
+    //  7         256456
+    //  8         10286
+    //  9         10286
+    //  10        1748838314
+    //  11        10286
+    //  12        1748838341
+    //  13        10286
+    //  14        4026532071
+    //  15        1748838315
+    //  16        1748838328
+    //  17        1748838329
+    //  18        1748838330
+    //  19        1748838331
+    //  20        1748838333
+    //  21        10286
+    //  26        1748838346
+    //  27        1748838348
+    //  28        1748838350
+    //  29        1748838352
+    //  30        1748838354
+    //  31        1748838356
+    //  =================================
+    //
+    // Similarily, it would print all the processes if the inputted pid is -1
 
     // print header
     printf("\n%-6s%-10s%-15s\n", " ", "FD", "Inode");
@@ -155,17 +310,30 @@ void getVnodes(process **processes, size_t count, long int pid)
 
 bool pidAccounted(long int pids[], size_t count, long int pid)
 {
-    // This function takes in tn array "long int pids[]" with its size "size_t count" as well as the pid "long int pid" that we
+    // This function takes in the array "long int pids[]" with its size "size_t count" as well as the pid "long int pid" that we
     // are searching for. The function will return true if the pid already exists in the array and false if it does not.
+    // Example Output:
+    // long int pids[23, 645, 743];
+    // pidAccounted(pids, 3, 743) returns
+    //
+    // true
+    // Example Output 2:
+    // long int pids[23, 645, 743];
+    // pidAccounted(pids, 3, 74) returns
+    //
+    // false
 
-    for (size_t i = 0; i < count; i++)
     {
-        if (pids[i] == pid)
+
+        for (size_t i = 0; i < count; i++)
         {
-            return true;
+            if (pids[i] == pid)
+            {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
 }
 
 void getOffending(process **processes, size_t count, long int threshhold)
@@ -173,6 +341,13 @@ void getOffending(process **processes, size_t count, long int threshhold)
     // This function will take in the array "process **processes" along with its length "size_t count" as well as a threshhold "long int threshhold"
     // and will print all the offending process in the format PID (FD), where FD represents the total number of fds for that process.
     // NOTES: We define an offending process as a process that has a number of file descriptors that exceeds the given threshhold.
+    // Example Output:
+    /// size_t count = 15 and fill the array process **processes with the 15 process structs like so:
+    // process **processes = {{ 118743, 0, "/dev/null", 5}, ........., {118743, 25, "socket:[642073]", 642073}} where ... represents the other 13 process structs
+    // getOffending(processes, count, 10) will print
+    //
+    // ## Offending processes:
+    // 118743 (15),
 
     // initialize an array that will store all the unique pids
     long int pids[count];
@@ -236,6 +411,8 @@ void outputText(process **processes, size_t count, long int pid)
     // will be equal to -1 if we want to go through every process, or equal to a particular pid if we want to generate a composite table for a specific process.
     // Note: The composite table is composed of (PID, FD, Filename, Inode) info
 
+    // FOR EXAMPLE OUTPUT REFER TO THE EXAMPLE OUTPUT OF getCompositeTable(). But in this case this will be printed in the compositeTable.txt file in the current directory
+
     // create the file
     FILE *file;
     file = fopen("compositeTable.txt", "w");
@@ -278,6 +455,8 @@ void outputBinary(process **processes, size_t count, long int pid)
     // that will be written in binary in a file named "compositeTable.bin".  Additionally, the function will recieve the "long int pid" which
     // will be equal to -1 if we want to go through every process, or equal to a particular pid if we want to generate a composite table for a specific process.
     // Note: The composite table is composed of (PID, FD, Filename, Inode) info
+
+    // FOR EXAMPLE OUTPUT REFER TO THE EXAMPLE OUTPUT OF getCompositeTable(). But in this case this will be printed in binary in the compositeTable.bin file in the current directory
 
     // create the file
     FILE *file;
@@ -333,7 +512,18 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
 {
     // This function will take in int argc and char *argv[] and will update the boolean pointers (composite, per_process, system, vnodes) and int/long int
     // pointers (threshold, pid) according to the command line arguments inputted.
-    // NOTE: THAT IF NEITHER (--composite, --per-process, --systemWide, --Vnodes) than we will printa all these tables.
+    // NOTE: THAT IF NEITHER (--composite, --per-process, --systemWide, --Vnodes) than we will print all these tables. Additionally we assume that threshold operates
+    // independantly from the pid positional flag (this means that threshold will search all processes even if a particular process is inputted as a CLA).
+    // Example Output:
+    // ./fdTables 1234 --composite
+    // parseArguments(int argc, char *argv[], bool *composite, bool *per_process, bool *system, bool *vnodes, int *threshold, long int *pid) will set:
+    //
+    // compsite = true, pid = 1234, the rest of booleans to false, and the rest of int to -1
+    // Example Output 2:
+    // ./fdTables --Vnodes --threshold=12 45362
+    // parseArguments(int argc, char *argv[], bool *composite, bool *per_process, bool *system, bool *vnodes, int *threshold, long int *pid) will set:
+    //
+    // vnodes = true, pid = 1234, threshold = 12, and the rest of booleans to false
 
     // if there is CLA
     if (argc > 1)
@@ -396,6 +586,15 @@ bool validateArguments(int argc, char *argv[])
 {
     // This functions takes int argc and char *argv[] and validates the command line arguments inputted by returning true if they are correct and
     // false if they are not. The validation includes checking for repeated arguments, mistyped arguments, too many argumenys, and correct use of positional arguments.
+    // Example Output:
+    // ./fdTables --composite 1234 returns
+    //
+    // true
+    // Example Output 2:
+    // ./fdTables --composite 1234 --composite returns
+    //
+    // false
+    // and prints "REPEATED ARGUMENTS. TRY AGAIN!
 
     // keep track of how many times each arg is called
     int compositeArgCount = 0;
@@ -423,7 +622,7 @@ bool validateArguments(int argc, char *argv[])
         {
             if (strcmp(argv[i], "--per-process") != 0 && strcmp(argv[i], "--systemWide") != 0 && strcmp(argv[i], "--Vnodes") != 0 && strcmp(argv[i], "--composite") != 0 && sscanf(argv[i], "%ld", &dummyValue) != 1 && sscanf(argv[i], "--threshold=%d", &secondDummyValue) != 1)
             {
-                printf("ONE OR MORE ARGUMENTS ARE MISTYPED OR IN THE WRONG ORDER. TRY AGAIN!\n");
+                printf("ONE OR MORE ARGUMENTS ARE MISTYPED. TRY AGAIN!\n");
                 return false;
             }
         }
@@ -492,6 +691,41 @@ void navigate(int argc, char *argv[])
 {
     // This function will take in int argc, char *argv[] and will validate/parse the inputted arguments as well as help navigate to the right output
     // depening on the command line arguments given.
+    // Example Output:
+    // ./fdTables --composite 3391894
+    // navigate(argc, argv[]) will print
+    //
+    //  PID       FD        Filename                      	Inode
+    //  ======================================================================
+    //  3391894   0         /dev/null                     	6
+    //  3391894   1         socket:[1748824698]           	1748824698
+    //  3391894   2         socket:[1748824698]           	1748824698
+    //  3391894   3         socket:[1748838307]           	1748838307
+    //  3391894   4         anon_inode:[eventpoll]        	10286
+    //  3391894   5         anon_inode:[signalfd]         	10286
+    //  3391894   6         anon_inode:inotify            	10286
+    //  3391894   7         /sys/fs/cgroup/unified/user.slice/user-23629403.slice/user@23629403.service	256456
+    //  3391894   8         anon_inode:[timerfd]          	10286
+    //  3391894   9         anon_inode:[eventpoll]        	10286
+    //  3391894   10        /proc/3391894/mountinfo       	1748838314
+    //  3391894   11        anon_inode:inotify            	10286
+    //  3391894   12        socket:[1748838341]           	1748838341
+    //  3391894   13        anon_inode:inotify            	10286
+    //  3391894   14        /proc/swaps                   	4026532071
+    //  3391894   15        socket:[1748838315]           	1748838315
+    //  3391894   16        socket:[1748838328]           	1748838328
+    //  3391894   17        socket:[1748838329]           	1748838329
+    //  3391894   18        socket:[1748838330]           	1748838330
+    //  3391894   19        socket:[1748838331]           	1748838331
+    //  3391894   20        socket:[1748838333]           	1748838333
+    //  3391894   21        anon_inode:[timerfd]          	10286
+    //  3391894   26        socket:[1748838346]           	1748838346
+    //  3391894   27        socket:[1748838348]           	1748838348
+    //  3391894   28        socket:[1748838350]           	1748838350
+    //  3391894   29        socket:[1748838352]           	1748838352
+    //  3391894   30        socket:[1748838354]           	1748838354
+    //  3391894   31        socket:[1748838356]           	1748838356
+    //  ======================================================================
 
     if (validateArguments(argc, argv) == true)
     {
@@ -536,7 +770,7 @@ void navigate(int argc, char *argv[])
         }
         else
         {
-            printf("THE SELECTED PID DOES NOT EXIST");
+            printf("THE SELECTED PID DOES NOT EXIST\n\n");
         }
     }
 }

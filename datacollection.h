@@ -15,7 +15,7 @@ typedef struct
     long int inode;
 } process;
 
-// define the function getProcesses()
+// define the function signature of getProcesses()
 size_t getProcesses(process **processes);
 
 #endif /* DATA */
