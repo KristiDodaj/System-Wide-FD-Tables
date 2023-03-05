@@ -36,7 +36,7 @@ void getCompositeTable(process **processes, size_t count, long int pid)
     {
         if (pid == -1)
         {
-            printf("%-6ld%-10ld%-10ld%-20s\t\t%-10ld\n", i, (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+            printf("%-6s%-10ld%-10ld%-20s\t\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
         }
         else
         {
