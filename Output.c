@@ -529,7 +529,7 @@ void navigate(int argc, char *argv[])
             {
                 getCompositeTable(processes, count, pid);
             }
-            if (threshold)
+            if (threshold != -1)
             {
                 getOffending(processes, count, threshold);
             }
