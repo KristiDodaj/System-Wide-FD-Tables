@@ -30,8 +30,6 @@ void getCompositeTable(process **processes, size_t count, long int pid)
     printf("%-6s======================================================================\n", " ");
 
     // print content
-    long int counter = 0;
-
     for (size_t i = 0; i < count; i++)
     {
         if (pid == -1)
@@ -42,8 +40,7 @@ void getCompositeTable(process **processes, size_t count, long int pid)
         {
             if ((*processes + i)->pid == pid)
             {
-                printf("%-6s%-10ld%-10ld%-30s%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
-                counter++;
+                printf("%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
             }
         }
     }
@@ -62,8 +59,6 @@ void getPerProcess(process **processes, size_t count, long int pid)
     printf("%-6s===========================================\n", " ");
 
     // print content
-    long int counter = 0;
-
     for (size_t i = 0; i < count; i++)
     {
         if (pid == -1)
@@ -75,16 +70,15 @@ void getPerProcess(process **processes, size_t count, long int pid)
             if ((*processes + i)->pid == pid)
             {
                 printf("%-6s%-10ld%-10ld", " ", (*processes + i)->pid, (*processes + i)->fd);
-                counter++;
             }
         }
     }
-    printf("%-6s==============================================================\n", " ");
+    printf("%-6s===========================================\n", " ");
 }
 
 int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getCompositeTable(processes, count, -1);
+    getPerProcess(processes, count, -1);
 }
