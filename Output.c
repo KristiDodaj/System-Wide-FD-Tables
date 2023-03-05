@@ -377,7 +377,7 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
         *system = true;
         *vnodes = true;
     }
-    else if (argc == 2 && sscanf(argv[2], "%ld", &temporary_pid) == 1)
+    else if (argc == 2 && sscanf(argv[1], "%ld", &temporary_pid) == 1)
     {
         *composite = true;
         *per_process = true;
