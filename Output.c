@@ -401,7 +401,7 @@ bool validateArguments(int argc, char *argv[])
     int positionalArgCount = 0;
 
     // check number of arguments
-    if (argc > 6)
+    if (argc > 7)
     {
         printf("TOO MANY ARGUMENTS. TRY AGAIN!\n");
         return false;
