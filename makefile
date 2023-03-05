@@ -1,13 +1,17 @@
 CC = gcc
 CFLAGS = −Wall −g −std=c99 −Werror
+OBJ = Output.o DataCollection.o
 
 all: fdTables
 
-fdTables: DataCollection.o Output.o
+fdTables: $(OBJ)
 	$(CC) $(CFLAGS) −o $@ $^
 
-.%o: %.c datacollection.h
-	$(CC) $(CFLAGS) −c $<
+Output.o: Output.c datacollection.h
+	$(CC) $(CFLAGS) -c Output.c
+
+DataCollection.o: DataCollection.c datacollection.h
+	$(CC) $(CFLAGS) -c DataCollection.c
 
 .PHONY: clean
 clean:
