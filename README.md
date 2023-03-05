@@ -15,7 +15,7 @@ Below is a list of each category and how the pieces interconnect.
 ## datacollection.h:
 
 1. typedef struct process // provides the definiton of the process data structure(low-level)
-2. size_t getProcesses(process \*\*processes); // defines the function signature(low-level)
+2. size_t getProcesses(process \*\*processes) // defines the function signature(low-level)
 
 ## DataCollection.c:
 
