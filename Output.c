@@ -21,8 +21,9 @@ bool pidExists(process **processes, size_t count, long int pid)
 
 void getCompositeTable(process **processes, size_t count, long int pid)
 {
-    // This function will take in the array process **processes along with its length size_t count and create a composite table. Additioanally, the function will recieve the long int pid which will be equal to -1 if
-    // we want to go through every process, or equal to a particular pid if we want to generate a composite table for a specific process.
+    // This function will take in the array process **processes along with its length size_t count and create a composite table.
+    // Additionally, the function will recieve the long int pid which will be equal to -1 if we want to go through every process,
+    // or equal to a particular pid if we want to generate a composite table for a specific process.
     // Note: The composite table is composed of (PID, FD, Filename, Inode) info
 
     // print header
@@ -50,8 +51,9 @@ void getCompositeTable(process **processes, size_t count, long int pid)
 
 void getPerProcess(process **processes, size_t count, long int pid)
 {
-    // This function will take in the array process **processes along with its length size_t count and create a per process table. Additioanally, the function will recieve the long int pid which will be equal to -1 if
-    // we want to go through every process, or equal to a particular pid if we want to generate a per process table for a specific process.
+    // This function will take in the array process **processes along with its length size_t count and create a per process table.
+    // Additionally, the function will recieve the long int pid which will be equal to -1 if we want to go through every process,
+    // or equal to a particular pid if we want to generate a per process table for a specific process.
     // Note: The per process table is composed of (PID, FD) info
 
     // print header
@@ -78,13 +80,14 @@ void getPerProcess(process **processes, size_t count, long int pid)
 
 void getSystemWide(process **processes, size_t count, long int pid)
 {
-    // This function will take in the array process **processes along with its length size_t count and create a system-wide FD table. Additioanally, the function will recieve the long int pid which will be equal to -1 if
-    // we want to go through every process, or equal to a particular pid if we want to generate a system-wide FD table for a specific process.
+    // This function will take in the array process **processes along with its length size_t count and create a system-wide FD table.
+    // Additionally, the function will recieve the long int pid which will be equal to -1 if we want to go through every process,
+    // or equal to a particular pid if we want to generate a system-wide FD table for a specific process.
     // Note: The system-wide FD table is composed of (PID, FD, Filename) info
 
     // print header
     printf("\n%-6s%-10s%-10s%-30s\n", " ", "PID", "FD", "Filename");
-    printf("%-6s ==================================================\n", " ");
+    printf("%-6s==================================================\n", " ");
 
     // print content
     for (size_t i = 0; i < count; i++)
@@ -101,12 +104,41 @@ void getSystemWide(process **processes, size_t count, long int pid)
             }
         }
     }
-    printf("%-6s ==================================================\n", " ");
+    printf("%-6s==================================================\n", " ");
+}
+
+getVnodes(process **processes, size_t count, long int pid)
+{
+    // This function will take in the array process **processes along with its length size_t count and create a Vnodes FD table .
+    // Additionally, the function will recieve the long int pid which will be equal to -1 if we want to go through every process,
+    // or equal to a particular pid if we want to generate a Vnodes FD table for a specific process.
+    // Note: The Vnodes FD table is composed of (FD, Inode) info
+
+    // print header
+    printf("\n%-6s%-10s%-10s\n", " ", "FD", "Inode");
+    printf("%-6s==================================================\n", " ");
+
+    // print content
+    for (size_t i = 0; i < count; i++)
+    {
+        if (pid == -1)
+        {
+            printf("%-6s%-10ld%-10ld\n", " ", (*processes + i)->fd, (*processes + i)->inode);
+        }
+        else
+        {
+            if ((*processes + i)->pid == pid)
+            {
+                printf("%-6s%-10ld%-10ld\n", " ", (*processes + i)->fd, (*processes + i)->inode);
+            }
+        }
+    }
+    printf("%-6s==================================================\n", " ");
 }
 
 int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getSystemWide(processes, count, 3160666);
+    getVnodes(processes, count, 3160666);
 }
