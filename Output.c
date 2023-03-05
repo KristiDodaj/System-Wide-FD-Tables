@@ -377,7 +377,7 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
         *vnodes = true;
     }
     // if no CLA except pid or threshold
-    if (*pid != -1 || ((*pid != -1) && (*threshold != -1)) && *composite == false && *per_process == false && *system == false && *vnodes == false)
+    if ((*pid != -1 || ((*pid != -1) && (*threshold != -1))) && *composite == false && *per_process == false && *system == false && *vnodes == false)
     {
         *composite = true;
         *per_process = true;
