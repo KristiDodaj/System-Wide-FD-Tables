@@ -329,8 +329,6 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
     // pointers (threshold, pid) according to the command line arguments inputted.
     // NOTE: THAT IF NEITHER (--composite, --per-process, --systemWide, --Vnodes) than we will printa all these tables.
 
-    long int temporary_pid = 0;
-
     // if there is CLA
     if (argc > 1)
     {
