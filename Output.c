@@ -58,7 +58,7 @@ void getPerProcess(process **processes, size_t count, long int pid)
     // Note: The per process table is composed of (PID, FD) info
 
     // print header
-    printf("\n%-6s%-10s%-10s%-20s\t\t%-10s\n", " ", "PID", "FD");
+    printf("\n%-6s%-10s%-10s\n", " ", "PID", "FD");
     printf("%-6s===========================================\n", " ");
 
     // print content
