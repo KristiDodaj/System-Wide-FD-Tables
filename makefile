@@ -7,8 +7,8 @@ all: fdTables
 fdTables: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
-Output.o: Output.c 
-	$(CC) $(CFLAGS) -c Output.c datacollection.h
+Output.o: Output.c datacollection.h
+	$(CC) $(CFLAGS) -c Output.c 
 
 DataCollection.o: DataCollection.c datacollection.h
 	$(CC) $(CFLAGS) -c DataCollection.c
