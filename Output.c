@@ -472,7 +472,7 @@ bool validateArguments(int argc, char *argv[])
         else if (sscanf(argv[i], "%ld", &dummyValue) == 1)
         {
             positionalArgCount++;
-            if (positionalArgCount > 2)
+            if (positionalArgCount > 1)
             {
                 printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
                 return false;
