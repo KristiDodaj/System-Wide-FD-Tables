@@ -140,5 +140,5 @@ int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getVnodes(processes, count, 3160666);
+    getVnodes(processes, count, -1);
 }
