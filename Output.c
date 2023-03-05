@@ -46,7 +46,7 @@ void getCompositeTable(process **processes, size_t count, long int pid)
         }
     }
 
-    printf("%-6s======================================================================\n", " ");
+    printf("%-6s======================================================================\n\n", " ");
 }
 
 void getPerProcess(process **processes, size_t count, long int pid)
@@ -75,7 +75,7 @@ void getPerProcess(process **processes, size_t count, long int pid)
             }
         }
     }
-    printf("%-6s===============\n", " ");
+    printf("%-6s===============\n\n", " ");
 }
 
 void getSystemWide(process **processes, size_t count, long int pid)
@@ -104,7 +104,7 @@ void getSystemWide(process **processes, size_t count, long int pid)
             }
         }
     }
-    printf("%-6s==================================================\n", " ");
+    printf("%-6s==================================================\n\n", " ");
 }
 
 void getVnodes(process **processes, size_t count, long int pid)
@@ -133,7 +133,43 @@ void getVnodes(process **processes, size_t count, long int pid)
             }
         }
     }
-    printf("%-6s=================================\n", " ");
+    printf("%-6s=================================\n\n", " ");
+}
+
+bool pidAccounted(long int pids[], size_t count, long int pid)
+{
+
+    for (size_t i = 0; i < count; i++)
+    {
+        if (pids[i] == pid)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void getOffending(process **processes, size_t count, long int threshhold)
+{
+    long int pids[count];
+
+    for (size_t i = 0; i < count; i++)
+    {
+        pids[i] = -1;
+    }
+
+    for (size_t i = 0; i < count; i++)
+    {
+        if (pidAccounted(pids, count, (*processes + i)->pid) == false)
+        {
+            pids[i] = (*processes + i)->pid;
+        }
+    }
+
+    for (size_t i = 0; i < count; i++)
+    {
+        printf("%ld\n", pids[i]);
+    }
 }
 
 int main()
