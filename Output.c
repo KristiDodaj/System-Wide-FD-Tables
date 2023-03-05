@@ -320,5 +320,5 @@ int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    outputText(processes, count, -1);
+    outputBinary(processes, count, -1);
 }
