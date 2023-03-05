@@ -107,7 +107,7 @@ void getSystemWide(process **processes, size_t count, long int pid)
     printf("%-6s==================================================\n", " ");
 }
 
-getVnodes(process **processes, size_t count, long int pid)
+void getVnodes(process **processes, size_t count, long int pid)
 {
     // This function will take in the array process **processes along with its length size_t count and create a Vnodes FD table .
     // Additionally, the function will recieve the long int pid which will be equal to -1 if we want to go through every process,
