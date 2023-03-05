@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "datacollection.h"
 
 bool pidExists(process **processes, size_t count, long int pid)
