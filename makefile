@@ -1,11 +1,11 @@
 CC = gcc
-CFLAGS = −Wall −g −std=c99 −Werror
+CFLAGS = -Wall -g -std=c99 -Werror
 OBJ = Output.o DataCollection.o
 
 all: fdTables
 
 fdTables: $(OBJ)
-	$(CC) $(CFLAGS) −o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 Output.o: Output.c datacollection.h
 	$(CC) $(CFLAGS) -c Output.c
