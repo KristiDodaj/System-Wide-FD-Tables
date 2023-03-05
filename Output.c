@@ -176,5 +176,5 @@ int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getVnodes(processes, count, -1);
+    getOffending(processes, count, 20);
 }
