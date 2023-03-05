@@ -273,27 +273,38 @@ void outputBinary(process **processes, size_t count, long int pid)
     }
     else
     {
+
         // print header
-        fprintf(file, "\n%-6s%-10s%-10s%-30s\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
-        fprintf(file, "%-6s======================================================================\n", " ");
+        char header[4096];
+        sprintf(header, "%-6s%-10s%-10s%-30s\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
+        fwrite(header, sizeof(char), strlen(header), file);
+
+        char seperator[100];
+        sprintf(seperator, "%-6s======================================================================\n", " ");
+        fwrite(seperator, sizeof(char), strlen(seperator), file);
 
         // print content
         for (size_t i = 0; i < count; i++)
         {
+            char buffer[4096];
+
             if (pid == -1)
             {
-                fprintf(file, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+                sprintf(buffer, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+                fwrite(buffer, sizeof(char), strlen(buffer), file);
             }
             else
             {
                 if ((*processes + i)->pid == pid)
                 {
-                    fprintf(file, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+                    sprintf(buffer, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+                    fwrite(buffer, sizeof(char), strlen(buffer), file);
                 }
             }
         }
-
-        fprintf(file, "%-6s======================================================================\n\n", " ");
+        char seperator2[100];
+        sprintf(seperator2, "%-6s======================================================================\n\n", " ");
+        fwrite(seperator2, sizeof(char), strlen(seperator2), file);
     }
 }
 
