@@ -331,18 +331,6 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
 
     long int temporary_pid = 0;
 
-    // find how many arguments without --threshold
-    int count = 0;
-    for (int i = 0; i < argc; i++)
-    {
-        int temp;
-        if (sscanf(argv[i], "--samples=%d", &temp) == 1 && temp >= 0)
-        {
-            count++;
-        }
-    }
-    int length = argc - count;
-
     // if there is CLA
     if (argc > 1)
     {
