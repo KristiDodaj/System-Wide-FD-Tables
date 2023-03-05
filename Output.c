@@ -327,11 +327,24 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
 {
     // This function will take in int argc and char *argv[] and will update the boolean pointers (composite, per_process, system, vnodes) and int/long int
     // pointers (threshold, pid) according to the command line arguments inputted.
+    // NOTE: THAT IF NEITHER (--composite, --per-process, --systemWide, --Vnodes) than we will printa all these tables.
 
     long int temporary_pid = 0;
 
+    // find how many arguments without --threshold
+    int count = 0;
+    for (int i = 0; i < argc; i++)
+    {
+        int temp;
+        if (sscanf(argv[i], "--samples=%d", &temp) == 1 && temp >= 0)
+        {
+            count++;
+        }
+    }
+    int length = argc - count;
+
     // if there is CLA
-    if (argc > 2)
+    if (argc > 1)
     {
         for (int i = 0; i < argc; i++)
         {
@@ -357,7 +370,7 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
             }
             // check for flag --threshold
             int temp;
-            if (sscanf(argv[i], "--samples=%d", &temp) == 1 && temp >= 0)
+            if (sscanf(argv[i], "--threshhold=%d", &temp) == 1 && temp >= 0)
             {
                 *threshold = temp;
             }
@@ -377,13 +390,13 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
         *system = true;
         *vnodes = true;
     }
-    else if (argc == 2 && sscanf(argv[1], "%ld", &temporary_pid) == 1)
+    // if no CLA except pid or threshold
+    if (*pid != -1 || (*pid != -1 && *threshold != -1) && *composite == false && *per_process == false && *system == false && *vnodes == false)
     {
         *composite = true;
         *per_process = true;
         *system = true;
         *vnodes = true;
-        *pid = temporary_pid;
     }
 }
 
