@@ -20,7 +20,8 @@ size_t getProcesses(process **processes)
     // process **processes = (process **)malloc(sizeof(process *));
     // size_t count = getProcesses(processes) will set:
     //
-    // size_t count = 15 and fill the array processes with the 15 process structs
+    // size_t count = 15 and fill the array process **processes with the 15 process structs like so:
+    // process **processes = {{ 118743, 0, "/dev/null", 5}, ........., {118743, 25, "socket:[642073]", 642073}} where ... represents the other 13 process structs
 
     // open the /proc directory
     DIR *directory = opendir("/proc");

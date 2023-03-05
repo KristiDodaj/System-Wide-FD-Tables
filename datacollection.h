@@ -1,5 +1,5 @@
 
-// datacollection.h: This is a header fil responsible for defining the contents of the process data structure as well as the function signature of getProcesses(process **processes)
+// datacollection.h: This is a header file responsible for defining the contents of the process data structure as well as the function signature of getProcesses(process **processes)
 
 #ifndef DATA
 #define DATA
