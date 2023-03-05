@@ -10,7 +10,14 @@
 bool pidExists(process **processes, size_t count, long int pid)
 {
     // This function will take in the array "process **processes" along with its length "size_t count" and a pid number (long int pid) and will check
-    // whether that pid exists in the array. The function will return true if it exists and false if it does not.
+    // whether that pid exists in the array. The function will return true if it exists and false if it does not exist or is an invalid PID.
+
+    // check if valid pid
+    if (pid < 0)
+    {
+        printf("THE INPUTTED PID IS IN THE WRONG FORMAT");
+        return false;
+    }
 
     // iterate array and find pid
     for (size_t i = 0; i < count; i++)
@@ -321,50 +328,172 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
     // This function will take in int argc and char *argv[] and will update the boolean pointers (composite, per_process, system, vnodes) and int/long int
     // pointers (threshold, pid) according to the command line arguments inputted.
 
-    for (int i = 0; i < argc; i++)
+    long int temporary_pid = 0;
+
+    // if there is CLA
+    if (argc > 2)
     {
-        // find if --composite was called
-        if (strcmp(argv[i], "--composite") == 0)
+        for (int i = 0; i < argc; i++)
         {
-            *composite = true;
-        }
-        // find if --per-process was called
-        if (strcmp(argv[i], "--per-process") == 0)
-        {
-            *per_process = true;
-        }
-        // find if --systemWide was called
-        if (strcmp(argv[i], "--systemWide") == 0)
-        {
-            *system = true;
-        }
-        // find if --Vnodes was called
-        if (strcmp(argv[i], "--Vnodes") == 0)
-        {
-            *vnodes = true;
-        }
-        // check for flag --threshold
-        int temp;
-        if (sscanf(argv[i], "--samples=%d", &temp) == 1 && temp >= 0)
-        {
-            *threshold = temp;
-        }
-        // check for PID positional argument
-        long int temp_pid;
-        if (argc > 1)
-        {
-            if (sscanf(argv[1], "%ld", &temp_pid) == 1)
+            // find if --composite was called
+            if (strcmp(argv[i], "--composite") == 0)
+            {
+                *composite = true;
+            }
+            // find if --per-process was called
+            if (strcmp(argv[i], "--per-process") == 0)
+            {
+                *per_process = true;
+            }
+            // find if --systemWide was called
+            if (strcmp(argv[i], "--systemWide") == 0)
+            {
+                *system = true;
+            }
+            // find if --Vnodes was called
+            if (strcmp(argv[i], "--Vnodes") == 0)
+            {
+                *vnodes = true;
+            }
+            // check for flag --threshold
+            int temp;
+            if (sscanf(argv[i], "--samples=%d", &temp) == 1 && temp >= 0)
+            {
+                *threshold = temp;
+            }
+            // check for PID positional argument
+            long int temp_pid;
+            if (sscanf(argv[i], "%ld", &temp_pid) == 1)
             {
                 *pid = temp_pid;
             }
         }
     }
+    // no CLA
+    else if (argc == 1)
+    {
+        *composite = true;
+        *per_process = true;
+        *system = true;
+        *vnodes = true;
+    }
+    else if (argc == 2 && sscanf(argv[2], "%ld", &temporary_pid) == 1)
+    {
+        *composite = true;
+        *per_process = true;
+        *system = true;
+        *vnodes = true;
+        *pid = temporary_pid;
+    }
+}
+
+bool validateArguments(int argc, char *argv[])
+{
+    // This functions takes int argc and char *argv[] and validates the command line arguments inputted by returning true if they are correct and
+    // false if they are not. The validation includes checking for repeated arguments, mistyped arguments, too many argumenys, and correct use of positional arguments.
+
+    // keep track of how many times each arg is called
+    int compositeArgCount = 0;
+    int perProcessArgCount = 0;
+    int systemArgCount = 0;
+    int vnodesArgCount = 0;
+    int thresholdArgCount = 0;
+    int positionalArgCount = 0;
+
+    // check number of arguments
+    if (argc > 6)
+    {
+        printf("TOO MANY ARGUMENTS. TRY AGAIN!\n");
+        return false;
+    }
+
+    // iterate argv to check for correctness
+    for (int i = 1; i < argc; i++)
+    {
+        long int dummyValue;
+        int secondDummyValue;
+
+        // check if all the flags are correctly formated
+        if (argc > 1)
+        {
+            if (strcmp(argv[i], "--per-process") != 0 && strcmp(argv[i], "--systemWide") != 0 && strcmp(argv[i], "--Vnodes") != 0 && strcmp(argv[i], "--composite") != 0 && sscanf(argv[i], "%ld", &dummyValue) != 1 && sscanf(argv[i], "--threshold=%d", &secondDummyValue) != 1)
+            {
+                printf("ONE OR MORE ARGUMENTS ARE MISTYPED OR IN THE WRONG ORDER. TRY AGAIN!\n");
+                return false;
+            }
+        }
+
+        // check if there are repeated arguments
+        if (strcmp(argv[i], "--per-process") == 0)
+        {
+            perProcessArgCount++;
+            if (perProcessArgCount > 1)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+        else if (strcmp(argv[i], "--systemWide") == 0)
+        {
+            systemArgCount++;
+            if (systemArgCount > 1)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+        else if (strcmp(argv[i], "--Vnodes") == 0)
+        {
+            vnodesArgCount++;
+            if (vnodesArgCount > 1)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+        else if (strcmp(argv[i], "--composite") == 0)
+        {
+            compositeArgCount++;
+            if (compositeArgCount > 1)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+        else if (sscanf(argv[i], "--threshold=%d", &secondDummyValue) == 1)
+        {
+            thresholdArgCount++;
+            if (thresholdArgCount > 1)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+        else if (sscanf(argv[i], "%ld", &dummyValue) == 1)
+        {
+            positionalArgCount++;
+            if (positionalArgCount > 2)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 int main(int argc, char *argv[])
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getCompositeTable(processes, count, -1);
-    getOffending(processes, count, 0);
+
+    bool composite = false;
+    bool per_process = false;
+    bool system = false;
+    bool vnodes = false;
+    int threshold = -1;
+    long int pid = -1;
+
+    validateArguments(argc, argv);
 }
