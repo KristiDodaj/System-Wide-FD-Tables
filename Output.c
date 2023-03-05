@@ -488,12 +488,12 @@ int main(int argc, char *argv[])
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
 
-    bool composite = false;
-    bool per_process = false;
-    bool system = false;
-    bool vnodes = false;
-    int threshold = -1;
-    long int pid = -1;
+    // bool composite = false;
+    // bool per_process = false;
+    // bool system = false;
+    // bool vnodes = false;
+    // int threshold = -1;
+    // long int pid = -1;
 
     validateArguments(argc, argv);
 }
