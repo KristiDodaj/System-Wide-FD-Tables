@@ -183,9 +183,9 @@ void getOffending(process **processes, size_t count, long int threshhold)
         {
             long int fds = 0;
 
-            for (size_t i = 0; i < count; i++)
+            for (size_t j = 0; j < count; j++)
             {
-                if ((*processes + i)->pid == pids[i])
+                if ((*processes + j)->pid == pids[j])
                 {
                     fds += 1;
                 }
