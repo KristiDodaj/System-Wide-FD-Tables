@@ -10,10 +10,16 @@
 bool pidExists(process **processes, size_t count, long int pid)
 {
     // This function will take in the array "process **processes" along with its length "size_t count" and a pid number (long int pid) and will check
-    // whether that pid exists in the array. The function will return true if it exists and false if it does not exist or is an invalid PID.
+    // whether that pid exists in the array. The function will return true if it exists or is equal to -1 (indicating we want every pid) and false if it does not exist or is an invalid PID.
+
+    // check it equals -1
+    if (pid == -1)
+    {
+        return true;
+    }
 
     // check if valid pid
-    if (pid < 0)
+    if (pid < -1)
     {
         printf("THE INPUTTED PID IS IN THE WRONG FORMAT");
         return false;
@@ -482,42 +488,57 @@ bool validateArguments(int argc, char *argv[])
     return true;
 }
 
+void navigate(int argc, char *argv[])
+{
+    // This function will take in int argc, char *argv[] and will validate/parse the inputted arguments as well as help navigate to the right output
+    // depening on the command line arguments given.
+
+    if (validateArguments(argc, argv) == true)
+    {
+
+        // interpret the called arguments
+        bool composite = false;
+        bool per_process = false;
+        bool system = false;
+        bool vnodes = false;
+        int threshold = -1;
+        long int pid = -1;
+
+        // get all processes
+        process **processes = (process **)malloc(sizeof(process *));
+        size_t count = getProcesses(processes);
+
+        parseArguments(argc, argv, &composite, &per_process, &system, &vnodes, &threshold, &pid);
+
+        // call the needed functions
+        if (pidExists(processes, count, pid) == true)
+        {
+            if (per_process)
+            {
+                getPerProcess(processes, count, pid);
+            }
+            if (system)
+            {
+                getSystemWide(processes, count, pid);
+            }
+            if (vnodes)
+            {
+                getVnodes(processes, count, pid);
+            }
+            if (composite)
+            {
+                getCompositeTable(processes, count, pid);
+            }
+            if (threshold)
+            {
+                getOffending(processes, count, threshold);
+            }
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    // process **processes = (process **)malloc(sizeof(process *));
-    //  size_t count = getProcesses(processes);
-
-    bool composite = false;
-    bool per_process = false;
-    bool system = false;
-    bool vnodes = false;
-    int threshold = -1;
-    long int pid = -1;
-
-    parseArguments(argc, argv, &composite, &per_process, &system, &vnodes, &threshold, &pid);
-
-    if (composite == true)
-    {
-        printf("COMPOSITE\n");
-    }
-    if (per_process == true)
-    {
-        printf("PER PROCESS\n");
-    }
-    if (system == true)
-    {
-        printf("SYSTEM WIDE\n");
-    }
-    if (vnodes == true)
-    {
-        printf("VNODES\n");
-    }
-    if (threshold != -1)
-    {
-        printf("THRESHOLD: %d\n", threshold);
-    }
-    if (pid != -1)
-    {
-        printf("PID: %ld\n", pid);
-    }
+    // call the navigate function which will redirect to the right output depeneding on the arguments
+    navigate(argc, argv);
 }
