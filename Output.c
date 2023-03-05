@@ -356,7 +356,7 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
             }
             // check for flag --threshold
             int temp;
-            if (sscanf(argv[i], "--threshhold=%d", &temp) == 1 && temp >= 0)
+            if (sscanf(argv[i], "--threshold=%d", &temp) == 1 && temp >= 0)
             {
                 *threshold = temp;
             }
