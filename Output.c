@@ -534,6 +534,10 @@ void navigate(int argc, char *argv[])
                 getOffending(processes, count, threshold);
             }
         }
+        else
+        {
+            printf("THE SELECTED PID DOES NOT EXIST");
+        }
     }
 }
 
