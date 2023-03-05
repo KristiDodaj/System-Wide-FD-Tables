@@ -485,15 +485,40 @@ bool validateArguments(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-    // process **processes = (process **)malloc(sizeof(process *));
-    //  size_t count = getProcesses(processes);
+    process **processes = (process **)malloc(sizeof(process *));
+    size_t count = getProcesses(processes);
 
-    // bool composite = false;
-    // bool per_process = false;
-    // bool system = false;
-    // bool vnodes = false;
-    // int threshold = -1;
-    // long int pid = -1;
+    bool composite = false;
+    bool per_process = false;
+    bool system = false;
+    bool vnodes = false;
+    int threshold = -1;
+    long int pid = -1;
 
-    validateArguments(argc, argv);
+    parseArguments(argc, argv, &composite, &per_process, &system, &vnodes, &threshold, &pid);
+
+    if (composite == true)
+    {
+        printf("COMPOSITE\n");
+    }
+    if (per_process == true)
+    {
+        printf("PER PROCESS\n");
+    }
+    if (system == true)
+    {
+        printf("SYSTEM WIDE\n");
+    }
+    if (vnodes == true)
+    {
+        printf("VNODES\n");
+    }
+    if (threshold != -1)
+    {
+        printf("THRESHOLD: %d\n", threshold);
+    }
+    if (pid != -1)
+    {
+        printf("PID: %ld\n", pid);
+    }
 }
