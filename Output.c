@@ -365,5 +365,6 @@ int main(int argc, char *argv[])
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
+    getCompositeTable(processes, count, -1);
     getOffending(processes, count, 0);
 }
