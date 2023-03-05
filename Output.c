@@ -200,13 +200,10 @@ void getOffending(process **processes, size_t count, long int threshhold)
 
     for (size_t i = 0; i < count; i++)
     {
-
-        printf("%ld (%ld)\n", pids[i], fd_num[i]);
-
-        // if (fd_num[i] > threshhold && fd_num[i] != -1)
-        // {
-        //     printf("%ld (%ld), ", pids[i], fd_num[i]);
-        // }
+        if (fd_num[i] > threshhold && fd_num[i] != -1)
+        {
+            printf("%ld (%ld), ", pids[i], fd_num[i]);
+        }
     }
 }
 
