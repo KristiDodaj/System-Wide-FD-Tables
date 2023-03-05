@@ -485,8 +485,8 @@ bool validateArguments(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-    process **processes = (process **)malloc(sizeof(process *));
-    // size_t count = getProcesses(processes);
+    // process **processes = (process **)malloc(sizeof(process *));
+    //  size_t count = getProcesses(processes);
 
     bool composite = false;
     bool per_process = false;
