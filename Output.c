@@ -115,25 +115,25 @@ void getVnodes(process **processes, size_t count, long int pid)
     // Note: The Vnodes FD table is composed of (FD, Inode) info
 
     // print header
-    printf("\n%-6s%-10s%-10s\n", " ", "FD", "Inode");
-    printf("%-6s==================================================\n", " ");
+    printf("\n%-6s%-10s%-15s\n", " ", "FD", "Inode");
+    printf("%-6s=================================\n", " ");
 
     // print content
     for (size_t i = 0; i < count; i++)
     {
         if (pid == -1)
         {
-            printf("%-6s%-10ld%-10ld\n", " ", (*processes + i)->fd, (*processes + i)->inode);
+            printf("%-6s%-10ld%-15ld\n", " ", (*processes + i)->fd, (*processes + i)->inode);
         }
         else
         {
             if ((*processes + i)->pid == pid)
             {
-                printf("%-6s%-10ld%-10ld\n", " ", (*processes + i)->fd, (*processes + i)->inode);
+                printf("%-6s%-10ld%-15ld\n", " ", (*processes + i)->fd, (*processes + i)->inode);
             }
         }
     }
-    printf("%-6s==================================================\n", " ");
+    printf("%-6s=================================\n", " ");
 }
 
 int main()
