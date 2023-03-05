@@ -80,5 +80,5 @@ int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getPerProcess(processes, count, -1);
+    getPerProcess(processes, count, 3160666);
 }
