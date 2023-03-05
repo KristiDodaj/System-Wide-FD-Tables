@@ -56,7 +56,7 @@ void getPerProcess(process **processes, size_t count, long int pid)
 
     // print header
     printf("\n%-6s%-10s%-10s\n", " ", "PID", "FD");
-    printf("%-6s===========================================\n", " ");
+    printf("%-6s===============\n", " ");
 
     // print content
     for (size_t i = 0; i < count; i++)
@@ -73,7 +73,7 @@ void getPerProcess(process **processes, size_t count, long int pid)
             }
         }
     }
-    printf("%-6s===========================================\n", " ");
+    printf("%-6s===============\n", " ");
 }
 
 int main()
