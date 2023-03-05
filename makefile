@@ -10,7 +10,7 @@ fdTables: $(OBJ)
 Output.o: Output.c datacollection.h
 	$(CC) $(CFLAGS) -c Output.c
 
-DataCollection.o: DataCollection.c datacollection.h
+DataCollection.o: DataCollection.c datacollection.h dirent.h unistd.h string.h
 	$(CC) $(CFLAGS) -c DataCollection.c
 
 .PHONY: clean
