@@ -353,7 +353,7 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
         long int temp_pid;
         if (argc > 1)
         {
-            if (sscanf(argv[1], "%d", &temp_pid) == 1)
+            if (sscanf(argv[1], "%ld", &temp_pid) == 1)
             {
                 *pid = temp_pid;
             }
