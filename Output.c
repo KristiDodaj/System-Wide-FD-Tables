@@ -316,9 +316,54 @@ void outputBinary(process **processes, size_t count, long int pid)
     fclose(file);
 }
 
-int main()
+void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, bool *system, bool *vnodes, int *threshold, long int *pid)
+{
+    // This function will take in int argc and char *argv[] and will update the boolean pointers (composite, per_process, system, vnodes) and int/long int
+    // pointers (threshold, pid) according to the command line arguments inputted.
+
+    for (int i = 0; i < argc; i++)
+    {
+        // find if --composite was called
+        if (strcmp(argv[i], "--composite") == 0)
+        {
+            *composite = true;
+        }
+        // find if --per-process was called
+        if (strcmp(argv[i], "--per-process") == 0)
+        {
+            *per_process = true;
+        }
+        // find if --systemWide was called
+        if (strcmp(argv[i], "--systemWide") == 0)
+        {
+            *system = true;
+        }
+        // find if --Vnodes was called
+        if (strcmp(argv[i], "--Vnodes") == 0)
+        {
+            *vnodes = true;
+        }
+        // check for flag --threshold
+        int temp;
+        if (sscanf(argv[i], "--samples=%d", &temp) == 1 && temp >= 0)
+        {
+            *threshold = temp;
+        }
+        // check for PID positional argument
+        long int temp_pid;
+        if (argc > 1)
+        {
+            if (sscanf(argv[1], "%d", &temp_pid) == 1)
+            {
+                *pid = temp_pid;
+            }
+        }
+    }
+}
+
+int main(int argc, char *argv[])
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getCompositeTable(processes, count, -1);
+    getOffending(processes, count, 0);
 }
