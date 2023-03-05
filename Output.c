@@ -306,7 +306,7 @@ void outputBinary(process **processes, size_t count, long int pid)
         }
 
         // format footer into character array
-        char footer[50];
+        char footer[100];
         sprintf(footer, "%-6s======================================================================\n\n", " ");
 
         // write footer to file
