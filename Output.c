@@ -151,6 +151,7 @@ bool pidAccounted(long int pids[], size_t count, long int pid)
 
 void getOffending(process **processes, size_t count, long int threshhold)
 {
+    // initialize an array that will store all the unique pids
     long int pids[count];
 
     for (size_t i = 0; i < count; i++)
@@ -158,17 +159,51 @@ void getOffending(process **processes, size_t count, long int threshhold)
         pids[i] = -1;
     }
 
+    // populate array with the unique pids
+    int number_of_pids = 0;
     for (size_t i = 0; i < count; i++)
     {
         if (pidAccounted(pids, count, (*processes + i)->pid) == false)
         {
             pids[i] = (*processes + i)->pid;
+            number_of_pids += 1;
         }
     }
 
+    // store number of FD for each processes
+    long int fd_num[count];
+
     for (size_t i = 0; i < count; i++)
     {
-        printf("%ld\n", pids[i]);
+        if (pids[i] == -1)
+        {
+            fd_num[i] = -1;
+        }
+        else
+        {
+            long int fds = 0;
+
+            for (size_t i = 0; i < count; i++)
+            {
+                if ((*processes + i)->pid == pids[i])
+                {
+                    fds += 1;
+                }
+            }
+
+            fd_num[i] = fds;
+        }
+    }
+
+    // print offending output
+    printf("\n## Offending processes:\n");
+
+    for (size_t i = 0; i < count; i++)
+    {
+        if (fd_num[i] > threshhold && fd_num[i] != -1)
+        {
+            printf("%ld (%ld), ", pids[i], fd_num[i]);
+        }
     }
 }
 
@@ -176,5 +211,6 @@ int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
+    getCompositeTable(processes, count, -1);
     getOffending(processes, count, 20);
 }
