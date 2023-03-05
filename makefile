@@ -8,9 +8,9 @@ fdTables: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
 Output.o: Output.c 
-	$(CC) $(CFLAGS) -c Output.c
+	$(CC) $(CFLAGS) -c Output.c datacollection.h
 
-DataCollection.o: DataCollection.c 
+DataCollection.o: DataCollection.c datacollection.h
 	$(CC) $(CFLAGS) -c DataCollection.c
 
 .PHONY: clean
