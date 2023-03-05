@@ -159,14 +159,12 @@ void getOffending(process **processes, size_t count, long int threshhold)
         pids[i] = -1;
     }
 
-    // populate array with the unique pids
-    int number_of_pids = 0;
+    // populate array with the unique pidsßß
     for (size_t i = 0; i < count; i++)
     {
         if (pidAccounted(pids, count, (*processes + i)->pid) == false)
         {
             pids[i] = (*processes + i)->pid;
-            number_of_pids += 1;
         }
     }
 
@@ -205,6 +203,7 @@ void getOffending(process **processes, size_t count, long int threshhold)
             printf("%ld (%ld), ", pids[i], fd_num[i]);
         }
     }
+    printf("\n\n");
 }
 
 int main()
