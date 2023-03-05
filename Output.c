@@ -255,6 +255,8 @@ void outputText(process **processes, size_t count, long int pid)
 
         fprintf(file, "%-6s======================================================================\n\n", " ");
     }
+    // close file
+    fclose(file);
 }
 
 void outputBinary(process **processes, size_t count, long int pid)
@@ -274,44 +276,49 @@ void outputBinary(process **processes, size_t count, long int pid)
     }
     else
     {
+        // format header into character array
+        char header[50];
+        sprintf(header, "\n%-6s%-10s%-10s%-30s\t%-10s\n%-6s======================================================================\n", " ", "PID", "FD", "Filename", "Inode", " ");
 
-        // print header
-        char header[4096];
-        sprintf(header, "%-6s%-10s%-10s%-30s\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
+        // write header to file
         fwrite(header, sizeof(char), strlen(header), file);
 
-        char seperator[100];
-        sprintf(seperator, "%-6s======================================================================\n", " ");
-        fwrite(seperator, sizeof(char), strlen(seperator), file);
-
-        // print content
+        // write content to file
         for (size_t i = 0; i < count; i++)
         {
-            char buffer[4096];
-
             if (pid == -1)
             {
-                sprintf(buffer, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
-                fwrite(buffer, sizeof(char), strlen(buffer), file);
+                fwrite(&((*processes + i)->pid), sizeof(long int), 1, file);
+                fwrite(&((*processes + i)->fd), sizeof(long int), 1, file);
+                fwrite((*processes + i)->filename, sizeof(char), strlen((*processes + i)->filename), file);
+                fwrite(&((*processes + i)->inode), sizeof(long int), 1, file);
             }
             else
             {
                 if ((*processes + i)->pid == pid)
                 {
-                    sprintf(buffer, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
-                    fwrite(buffer, sizeof(char), strlen(buffer), file);
+                    fwrite(&((*processes + i)->pid), sizeof(long int), 1, file);
+                    fwrite(&((*processes + i)->fd), sizeof(long int), 1, file);
+                    fwrite((*processes + i)->filename, sizeof(char), strlen((*processes + i)->filename), file);
+                    fwrite(&((*processes + i)->inode), sizeof(long int), 1, file);
                 }
             }
         }
-        char seperator2[100];
-        sprintf(seperator2, "%-6s======================================================================\n\n", " ");
-        fwrite(seperator2, sizeof(char), strlen(seperator2), file);
+
+        // format footer into character array
+        char footer[50];
+        sprintf(footer, "%-6s======================================================================\n\n", " ");
+
+        // write footer to file
+        fwrite(footer, sizeof(char), strlen(footer), file);
     }
+    // close file
+    fclose(file);
 }
 
 int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    outputBinary(processes, count, -1);
+    outputText(processes, count, -1);
 }
