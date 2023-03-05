@@ -217,9 +217,55 @@ void getOffending(process **processes, size_t count, long int threshhold)
 
 void outputText(process **processes, size_t count, long int pid)
 {
+    // This function will take in the array "process **processes" along with its length "size_t count" and create a composite table
+    // that will be written in ASCII in a file named "compositeTable.txt".  Additionally, the function will recieve the "long int pid" which
+    // will be equal to -1 if we want to go through every process, or equal to a particular pid if we want to generate a composite table for a specific process.
+    // Note: The composite table is composed of (PID, FD, Filename, Inode) info
+
     // create the file
     FILE *file;
     file = fopen("compositeTable.txt", "w");
+
+    if (file == NULL)
+    {
+        printf("Error creating file");
+    }
+    else
+    {
+        // print header
+        fprintf(file, "\n%-6s%-10s%-10s%-30s\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
+        fprintf(file, "%-6s======================================================================\n", " ");
+
+        // print content
+        for (size_t i = 0; i < count; i++)
+        {
+            if (pid == -1)
+            {
+                fprintf(file, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+            }
+            else
+            {
+                if ((*processes + i)->pid == pid)
+                {
+                    fprintf(file, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+                }
+            }
+        }
+
+        fprintf(file, "%-6s======================================================================\n\n", " ");
+    }
+}
+
+void outputBinary(process **processes, size_t count, long int pid)
+{
+    // This function will take in the array "process **processes" along with its length "size_t count" and create a composite table
+    // that will be written in binary in a file named "compositeTable.bin".  Additionally, the function will recieve the "long int pid" which
+    // will be equal to -1 if we want to go through every process, or equal to a particular pid if we want to generate a composite table for a specific process.
+    // Note: The composite table is composed of (PID, FD, Filename, Inode) info
+
+    // create the file
+    FILE *file;
+    file = fopen("compositeTable.bin", "wb");
 
     if (file == NULL)
     {
@@ -255,5 +301,5 @@ int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    outputText(processes, count, -1);
+    outputBinary(processes, count, -1);
 }
