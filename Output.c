@@ -277,7 +277,7 @@ void outputBinary(process **processes, size_t count, long int pid)
     else
     {
         // format header into character array
-        char header[50];
+        char header[200];
         sprintf(header, "\n%-6s%-10s%-10s%-30s\t%-10s\n%-6s======================================================================\n", " ", "PID", "FD", "Filename", "Inode", " ");
 
         // write header to file
