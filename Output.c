@@ -76,9 +76,37 @@ void getPerProcess(process **processes, size_t count, long int pid)
     printf("%-6s===============\n", " ");
 }
 
+void getSystemWide(process **processes, size_t count, long int pid)
+{
+    // This function will take in the array process **processes along with its length size_t count and create a system-wide FD table. Additioanally, the function will recieve the long int pid which will be equal to -1 if
+    // we want to go through every process, or equal to a particular pid if we want to generate a system-wide FD table for a specific process.
+    // Note: The system-wide FD table is composed of (PID, FD, Filename) info
+
+    // print header
+    printf("\n%-6s%-10s%-10s%-30s\n", " ", "PID", "FD", "Filename");
+    printf("%-6s======================================================================\n", " ");
+
+    // print content
+    for (size_t i = 0; i < count; i++)
+    {
+        if (pid == -1)
+        {
+            printf("%-6s%-10ld%-10ld%-30s\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename);
+        }
+        else
+        {
+            if ((*processes + i)->pid == pid)
+            {
+                printf("%-6s%-10ld%-10ld%-30s\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename);
+            }
+        }
+    }
+    printf("%-6s======================================================================\n", " ");
+}
+
 int main()
 {
     process **processes = (process **)malloc(sizeof(process *));
     size_t count = getProcesses(processes);
-    getPerProcess(processes, count, 3160666);
+    getSystemWide(processes, count, -1);
 }
