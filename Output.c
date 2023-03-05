@@ -26,8 +26,8 @@ void getCompositeTable(process **processes, size_t count, long int pid)
     // Note: The composite table is composed of (PID, FD, Filename, Inode) info
 
     // print header
-    printf("\n%-6s%-10s%-10s%-20s\t\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
-    printf("%-6s==============================================================\n", " ");
+    printf("\n%-6s%-10s%-10s%-30s\t\t%-10s\n", " ", "PID", "FD", "Filename", "Inode");
+    printf("%-6s======================================================================\n", " ");
 
     // print content
     long int counter = 0;
@@ -48,7 +48,7 @@ void getCompositeTable(process **processes, size_t count, long int pid)
         }
     }
 
-    printf("%-6s==============================================================\n", " ");
+    printf("%-6s======================================================================\n", " ");
 }
 
 void getPerProcess(process **processes, size_t count, long int pid)
