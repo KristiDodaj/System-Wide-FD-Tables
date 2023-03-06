@@ -505,7 +505,7 @@ void outputBinary(process **processes, size_t count, long int pid)
     fclose(file);
 }
 
-void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, bool *system, bool *vnodes, int *threshold, long int *pid)
+void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, bool *system, bool *vnodes, bool *text, bool *binary, int *threshold, long int *pid)
 {
     // This function will take in int argc and char *argv[] and will update the boolean pointers (composite, per_process, system, vnodes) and int/long int
     // pointers (threshold, pid) according to the command line arguments inputted.
@@ -547,6 +547,16 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
             {
                 *vnodes = true;
             }
+            // find if --output_TXT was called
+            if (strcmp(argv[i], "--output_TXT") == 0)
+            {
+                *text = true;
+            }
+            // find if --output_binarywas called
+            if (strcmp(argv[i], "--output_binary") == 0)
+            {
+                *binary = true;
+            }
             // check for flag --threshold
             int temp;
             if (sscanf(argv[i], "--threshold=%d", &temp) == 1 && temp >= 0)
@@ -570,7 +580,7 @@ void parseArguments(int argc, char *argv[], bool *composite, bool *per_process, 
         *vnodes = true;
     }
     // if no CLA except pid or threshold
-    if (((*pid != -1) || (*threshold != -1)) && *composite == false && *per_process == false && *system == false && *vnodes == false)
+    if (((*pid != -1) || (*threshold != -1) || (*text == true) || (*binary == true)) && *composite == false && *per_process == false && *system == false && *vnodes == false)
     {
         *composite = true;
         *per_process = true;
@@ -599,10 +609,12 @@ bool validateArguments(int argc, char *argv[])
     int systemArgCount = 0;
     int vnodesArgCount = 0;
     int thresholdArgCount = 0;
+    int text = 0;
+    int binary = 0;
     int positionalArgCount = 0;
 
     // check number of arguments
-    if (argc > 7)
+    if (argc > 9)
     {
         printf("TOO MANY ARGUMENTS. TRY AGAIN!\n");
         return false;
@@ -617,7 +629,7 @@ bool validateArguments(int argc, char *argv[])
         // check if all the flags are correctly formated
         if (argc > 1)
         {
-            if (strcmp(argv[i], "--per-process") != 0 && strcmp(argv[i], "--systemWide") != 0 && strcmp(argv[i], "--Vnodes") != 0 && strcmp(argv[i], "--composite") != 0 && sscanf(argv[i], "%ld", &dummyValue) != 1 && sscanf(argv[i], "--threshold=%d", &secondDummyValue) != 1)
+            if (strcmp(argv[i], "--output_binary") != 0 && strcmp(argv[i], "--output_TXT") != 0 && strcmp(argv[i], "--per-process") != 0 && strcmp(argv[i], "--systemWide") != 0 && strcmp(argv[i], "--Vnodes") != 0 && strcmp(argv[i], "--composite") != 0 && sscanf(argv[i], "%ld", &dummyValue) != 1 && sscanf(argv[i], "--threshold=%d", &secondDummyValue) != 1)
             {
                 printf("ONE OR MORE ARGUMENTS ARE MISTYPED. TRY AGAIN!\n");
                 return false;
@@ -656,6 +668,24 @@ bool validateArguments(int argc, char *argv[])
         {
             compositeArgCount++;
             if (compositeArgCount > 1)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+        else if (strcmp(argv[i], "--output_binary") == 0)
+        {
+            binary++;
+            if (binary > 1)
+            {
+                printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
+                return false;
+            }
+        }
+        else if (strcmp(argv[i], "--output_TXT") == 0)
+        {
+            text++;
+            if (text > 1)
             {
                 printf("REPEATED ARGUMENTS. TRY AGAIN!\n");
                 return false;
@@ -732,6 +762,8 @@ void navigate(int argc, char *argv[])
         bool per_process = false;
         bool system = false;
         bool vnodes = false;
+        bool text = false;
+        bool binary = false;
         int threshold = -1;
         long int pid = -1;
 
@@ -739,7 +771,7 @@ void navigate(int argc, char *argv[])
         process **processes = (process **)malloc(sizeof(process *));
         size_t count = getProcesses(processes);
 
-        parseArguments(argc, argv, &composite, &per_process, &system, &vnodes, &threshold, &pid);
+        parseArguments(argc, argv, &composite, &per_process, &system, &vnodes, &text, &binary, &threshold, &pid);
 
         // call the needed functions
         if (pidExists(processes, count, pid) == true)
@@ -764,13 +796,19 @@ void navigate(int argc, char *argv[])
             {
                 getOffending(processes, count, threshold);
             }
+            if (binary)
+            {
+                outputBinary(processes, count, pid);
+            }
+            if (text)
+            {
+                outputText(processes, count, pid);
+            }
         }
         else
         {
             printf("THE SELECTED PID DOES NOT EXIST\n\n");
         }
-
-        outputBinary(processes, count, pid);
     }
 }
 
