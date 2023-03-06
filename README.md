@@ -30,8 +30,10 @@ Below is a list of each category and how the pieces interconnect.
 5. getVnodes(process \*\*processes, size_t count, long int pid) // prints vnodes table(low-level)
 6. pidAccounted(long int pids[], size_t count, long int pid) // helper function to check if pid exists in given array(low-level)
 7. getOffending(process \*\*processes, size_t count, long int threshhold) // prints offending processes(low-level)
-8. parseArguments(int argc, char *argv[], bool *system, bool *user, bool *sequential, int *samples, int *tdelay) // parses command line arguments passed
-9. validateArguments(int argc, char \*argv[]) // validates the command line arguments passed
+8. outputText(process \*\*processes, size_t count, long int pid) // prints composite table in text file(low-level)
+9. outputBinary(process \*\*processes, size_t count, long int pid) //prints composite table in binary file(low-level)
+10. parseArguments(int argc, char *argv[], bool *system, bool *user, bool *sequential, int *samples, int *tdelay) // parses command line arguments passed
+11. validateArguments(int argc, char \*argv[]) // validates the command line arguments passed
 
 Notice that all these functions are responsible for getting the information and each has a singular responsibility.
 
