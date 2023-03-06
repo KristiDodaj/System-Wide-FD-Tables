@@ -7,8 +7,11 @@ all: fdTables
 fdTables: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.c
+Output.o: $(OBJ)
 	$(CC) $(CFLAGS) -c $< 
+
+DataCollection.o: DataCollection.c datacollection.h
+	$(CC) $(CFLAGS) -c $< 	
 
 .PHONY: clean
 clean:
