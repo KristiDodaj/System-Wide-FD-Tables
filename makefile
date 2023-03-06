@@ -14,8 +14,8 @@ fdTables: $(OBJ)
 clean:
 	rm *.o
 
-.PHONY: cleanText
+.PHONY2: cleanText
 	rm compositeTable.txt
 
-.PHONY: cleanBinary
+.PHONY3: cleanBinary
 	rm compositeTable.bin
