@@ -469,7 +469,7 @@ void outputBinary(process **processes, size_t count, long int pid)
     else
     {
         // format header into character array
-        char header[200];
+        char header[1000];
         sprintf(header, "\n%-6s%-10s%-10s%-30s\t%-10s\n%-6s======================================================================\n", " ", "PID", "FD", "Filename", "Inode", " ");
 
         // write header to file
@@ -478,21 +478,18 @@ void outputBinary(process **processes, size_t count, long int pid)
         // write content to file
         for (size_t i = 0; i < count; i++)
         {
+            char buffer[4096];
             if (pid == -1)
             {
-                fwrite(&((*processes + i)->pid), sizeof(long int), 1, file);
-                fwrite(&((*processes + i)->fd), sizeof(long int), 1, file);
-                fwrite((*processes + i)->filename, sizeof(char), strlen((*processes + i)->filename), file);
-                fwrite(&((*processes + i)->inode), sizeof(long int), 1, file);
+                sprintf(buffer, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+                fwrite(buffer, sizeof(char), strlen(buffer), file);
             }
             else
             {
                 if ((*processes + i)->pid == pid)
                 {
-                    fwrite(&((*processes + i)->pid), sizeof(long int), 1, file);
-                    fwrite(&((*processes + i)->fd), sizeof(long int), 1, file);
-                    fwrite((*processes + i)->filename, sizeof(char), strlen((*processes + i)->filename), file);
-                    fwrite(&((*processes + i)->inode), sizeof(long int), 1, file);
+                    sprintf(buffer, "%-6s%-10ld%-10ld%-30s\t%-10ld\n", " ", (*processes + i)->pid, (*processes + i)->fd, (*processes + i)->filename, (*processes + i)->inode);
+                    fwrite(buffer, sizeof(char), strlen(buffer), file);
                 }
             }
         }
@@ -772,6 +769,8 @@ void navigate(int argc, char *argv[])
         {
             printf("THE SELECTED PID DOES NOT EXIST\n\n");
         }
+
+        outputBinary(processes, count, pid);
     }
 }
 
