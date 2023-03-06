@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99
+CFLAGS = -Wall -std=c99
 OBJ = Output.o DataCollection.o datacollection.h
 
 all: fdTables
@@ -13,7 +13,3 @@ fdTables: $(OBJ)
 .PHONY: clean
 clean:
 	rm *.o
-
-.PHONY: cleanFiles
-cleanFiles:
-	rm compositeTable.txt compositeTable.bin
