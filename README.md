@@ -47,7 +47,7 @@ RUN THE FOLLOWING COMMANDS IN SEQUENCE:
 <br /> `make`
 <br /> `./fdTables [insert flags or positional args here]`
 
-Note: You can run "make clean" to erase all the .o files produced from the compilation process
+Note: You can run "make clean" to erase all the .o files produced from the compilation process or use "make cleanText" or "make cleanBinary" to delete the text and binary files produced.
 
 THE ARGUMENT OPTIONS INCLUDE:
 
