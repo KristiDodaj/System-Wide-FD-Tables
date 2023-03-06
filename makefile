@@ -1,14 +1,14 @@
 CC = gcc
 CFLAGS = -Wall -std=c99
-OBJ = Output.o DataCollection.o datacollection.h
+OBJ = Output.o DataCollection.o 
 
 all: fdTables
 
 fdTables: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.c datacollection.h
-	$(CC) $(CFLAGS) -c $< datacollection.h
+%.o: %.c 
+	$(CC) $(CFLAGS) -c $< 
 
 .PHONY: clean
 clean:
