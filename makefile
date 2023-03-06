@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -std=c99
+CFLAGS = -Wall
 OBJ = Output.o DataCollection.o datacollection.h
 
 all: fdTables
