@@ -15,7 +15,9 @@ clean:
 	rm *.o
 
 .PHONY2: cleanText
+cleanText:
 	rm compositeTable.txt
 
 .PHONY3: cleanBinary
+cleanBinary:
 	rm compositeTable.bin
