@@ -7,13 +7,9 @@ all: fdTables
 fdTables: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.c 
+%.o: %.c datacollection.h
 	$(CC) $(CFLAGS) -c $<
 
 .PHONY: clean
 clean:
 	rm *.o
-
-.PHONY: cleanFiles
-cleanFiles:
-	rm compositeTable.txt compositeTable.bin
