@@ -13,3 +13,6 @@ fdTables: $(OBJ)
 .PHONY: clean
 clean:
 	rm *.o
+
+.PHONY: cleanFiles
+	rm compositeTable.txt compositeTable.bin
